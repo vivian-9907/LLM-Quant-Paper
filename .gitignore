@@ -1,2 +1,8 @@
 outputs/**/*.md
+outputs/**/*.yml
+outputs/**/*.yaml
 !outputs/**/.gitkeep
+inputs/manual/*
+!inputs/manual/.gitkeep
+history/
+local/

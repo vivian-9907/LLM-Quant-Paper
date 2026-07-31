@@ -1,0 +1,33 @@
+# Repeat this object for every normalized candidate.
+- id: "{{stable_event_id}}"
+  title: "{{title}}"
+  organization: "{{organization_or_unknown}}"
+  event_type: "{{event_type_from_config}}"
+  event_date: "{{YYYY-MM-DD}}"
+  channels: []
+  origin:
+    mode: "{{radar|manual}}"
+    discovered_via: []
+  summary:
+    what_happened: ""
+    technical_delta: ""
+    why_it_matters: ""
+    linkless_sentence: ""
+  evidence:
+    primary_sources: []
+    secondary_sources: []
+    reported_metrics: []
+    artifact_status: "{{none|announced|available|runnable}}"
+    maturity: "{{research|experimental|beta|production|ga}}"
+    verification_status: "{{unverified|partial|verified}}"
+  relation_to_previous:
+    status: "{{new|new_evidence|new_implementation|continuation|repeat_only}}"
+    note: ""
+  decisions:
+    radar: "{{inspect|track-code|replicate|skim|watch|ignore}}"
+    briefing: "{{headline|trend|full_only|watch|archive}}"
+    rationale: []
+  miss_feedback:
+    was_manual_miss: false
+    cause: ""
+    generalized_fix: ""

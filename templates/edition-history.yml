@@ -1,0 +1,21 @@
+- edition: "{{edition_name}}"
+  window:
+    start: "{{YYYY-MM-DD}}"
+    end: "{{YYYY-MM-DD}}"
+  status: "{{draft|final}}"
+  created_at: "{{ISO-8601 timestamp}}"
+  updated_at: "{{ISO-8601 timestamp}}"
+  takeaway: "{{one_sentence_takeaway}}"
+  card_items:
+    - name: "{{exact_item_or_theme_name}}"
+      organization: "{{organization_or_unknown}}"
+      event_type: "{{event_type}}"
+      weekly_delta: "{{what_was_new_in_this_window}}"
+  themes:
+    - name: "{{normalized_theme_name}}"
+      stage: "{{emerging|continuing|new_evidence|new_implementation|cooling}}"
+      judgment: "{{directional_conclusion}}"
+      representative_items: []
+  full_only_items: []
+  next_watch: []
+  source_note: "{{briefing source or import note}}"

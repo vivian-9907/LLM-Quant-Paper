@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.9 - Recall and editorial pipeline
+
+- Added event-based discovery that runs known-ecosystem monitoring and open-world discovery in parallel.
+- Added mandatory coverage slots for model/API releases, reports, open-source projects, material repository changes, events and production evidence.
+- Added a closing sweep for late-window official updates, releases, merged PRs and paper artifacts.
+- Added a normalized candidate ledger so AI Infra and quantization results can be deduplicated by event.
+- Added a separate editorial rubric for headline, trend, full-only, watch and archive placement.
+- Added a `briefing` workflow that compares the previous edition and generates a link-independent card plus a sourced full version.
+- Added first-class manual candidate intake and generalized miss feedback without entity-specific retention rules.
+
 ## v0.8 - Hardware platform report coverage
 
 - Added `hardware_platform_reports` as an opt-in / conditionally expanded source group for rack-scale system, interconnect, power/cooling and token-cost reports.

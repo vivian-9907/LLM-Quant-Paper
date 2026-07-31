@@ -1,0 +1,8 @@
+version: 1
+edition: "{{edition}}"
+window:
+  start: "{{YYYY-MM-DD}}"
+  end: "{{YYYY-MM-DD}}"
+canonical_final_path: "{{absolute path actually used}}"
+last_generated_at: "{{ISO-8601 timestamp}}"
+last_finalized_at: ""
