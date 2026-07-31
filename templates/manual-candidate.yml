@@ -1,0 +1,10 @@
+- submitted_at: "{{ISO-8601 timestamp}}"
+  target_window: "{{YYYY-MM-DD_YYYY-MM-DD}}"
+  raw_input: "{{user text or URL}}"
+  user_note: ""
+  origin: manual
+  status: pending_verification
+  normalized_candidate_id: ""
+  miss_feedback:
+    cause: "{{unknown_source|source_health|query_gap|filter_error|late_release|cross_channel_loss|other}}"
+    generalized_fix: ""

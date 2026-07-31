@@ -10,6 +10,7 @@
 ## 工作流
 
 - `radar <channel>`：在指定频道的固定研究范围内，按时间和来源搜索论文/项目/博客/artifact，只输出真正有价值的候选。
+- `briefing <time_range>`：合并两个频道、人工补录和上一期简报，完成 closing sweep、事实复核与编辑筛选，同时生成群发版和正式版。
 
 ## 使用示例
 
@@ -21,12 +22,61 @@ radar ai-infra 过去 30 天
 radar quantization 只看 KV cache compression
 radar ai-infra 只查 framework releases
 radar ai-infra 只看 agent products 和 repo activity
+briefing 2026-07-24 2026-07-31
+briefing add https://example.com/new-signal
 radar ai-infra 只看模型架构对 infra 的影响
 ```
+
+## Briefing 工作流
+
+```mermaid
+flowchart TD
+    A["在 Codex 中执行 briefing 起止日期"] --> B["读取 SKILL、配置和观察窗口"]
+    B --> C{"本期两个 Radar 是否已经存在？"}
+
+    C -- "否" --> D1["运行 radar ai-infra"]
+    C -- "否" --> D2["运行 radar quantization"]
+    C -- "是" --> E["读取已有 Radar 候选"]
+
+    D1 --> F["统一候选池"]
+    D2 --> F
+    E --> F
+    M["inputs/manual 人工补录"] --> F
+
+    F --> G["通用补漏：已知生态监控 + 开放世界发现"]
+    G --> H["Closing sweep：复查窗口末 48 小时"]
+    H --> I["核验日期、来源、归属、指标和成熟度"]
+    I --> J["跨频道去重并按事件/主题归并"]
+
+    P["history/editions.yml<br/>自动选择当前窗口之前最近一期"] --> K["比较上周：新事件 / 新证据 / 新落地 / 仅重复"]
+    J --> K
+    K --> L["编辑筛选：headline / trend / full-only / watch / archive"]
+
+    L --> N1["briefing-card.md<br/>News 群发版：无链接也能读懂"]
+    L --> N2["briefing-full.md<br/>News 正式版：技术细节 + 一手链接"]
+    N1 --> Q["自动 upsert 本地 draft 快照<br/>同一窗口只保留一条最新记录"]
+    N2 --> Q
+    N2 --> R["写入并记录 canonical 最终稿路径"]
+    R --> S["用户在文件中手工润色"]
+    S --> T["定稿 / briefing finalize"]
+    T --> QF["重新读取实际文件<br/>重建 final 快照"]
+
+
+    U["之后发现漏项"] --> V["briefing add 链接或内容"]
+    V --> M
+```
+
+说明：已有 Radar 可以复用，但 `briefing` 仍会执行通用补漏、closing sweep、人工补录检查和上期对照；群发版与正式版共用同一份选题结果。
 
 常规运行默认读取频道 `profile`、`watchlist`、`sources` 和 `radar-rubric`。只有在专项扫描、召回不足、分类不确定或用户要求完整覆盖时，才展开 `topics.full.yml` 和频道 research map。
 
 如果需要保存结果，写入 `outputs/<channel>/radar/`。生成的 Markdown 报告默认不提交到 git，目录中的 `.gitkeep` 只用于保留输出路径。
+
+最终简报写入 `outputs/briefing/<date_range>/`；用户发现的漏项写入 `inputs/manual/`，核验后进入同一候选池，不为单个实体增加硬编码保留规则。
+上一期对照来自本地且不提交 Git 的 `history/editions.yml`。生成和修改 briefing 时会自动更新 draft。若你在最终 Markdown 中手工润色，执行 `briefing finalize` 会重新读取磁盘上的实际文件，再重建 final 快照，不会沿用旧草稿。
+
+本机最终稿目录配置在同样不提交 Git 的 `local/briefing.yml`；仓库只追踪 [配置模板](templates/local-briefing-settings.yml)。
+
 
 配置了 `digest_template` 的频道保存结果时，可以额外生成工作群短简报，写入对应的 `outputs/<channel>/digest/`。短简报用于每周群发，完整证据链仍保留在 `outputs/<channel>/radar/` 的 full report。
 
@@ -135,6 +185,6 @@ templates/radar-digest-quantization.md
 
 ## 状态
 
-当前是 v0.6 lightweight infra briefing baseline。默认读取 profile 和 watchlist；需要时再展开完整 topics 和 research map。
+当前是 v0.9 recall + editorial pipeline。Radar 并行执行已知生态监控和开放世界发现；Briefing 负责跨频道去重、与上期比较、人工补录和双版本生成。
 
 版本演进记录见 [CHANGELOG.md](CHANGELOG.md)。

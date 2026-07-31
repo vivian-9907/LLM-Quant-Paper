@@ -1,0 +1,112 @@
+version: 1
+purpose: >
+  用事件类型而不是固定实体识别近期 LLM Infra 信号。重点实体只影响查询扩展和排序，
+  不影响一个事件能否进入候选池。
+
+event_types:
+  model_api_or_agent_release:
+    discovery_signals:
+      - now live
+      - public beta
+      - generally available
+      - new model or version
+      - API update or model card
+      - tool use or agent capability
+      - pricing or rate limit
+    minimum_evidence:
+      - dated official announcement, changelog, documentation or model card
+    strengthen_with:
+      - benchmark
+      - API documentation
+      - architecture or runtime detail
+
+  paper_or_technical_report:
+    discovery_signals:
+      - arXiv first submission
+      - proceedings publication
+      - official technical report
+      - systems benchmark report
+    minimum_evidence:
+      - dated primary paper or official report
+    strengthen_with:
+      - code or artifact
+      - reproducible configuration
+      - production or multi-system evaluation
+
+  new_open_source_project:
+    discovery_signals:
+      - repository creation
+      - first public release
+      - first runnable artifact
+      - paper-linked implementation
+    minimum_evidence:
+      - public repository with code, license and usage path
+    strengthen_with:
+      - benchmark
+      - tests
+      - release artifacts
+      - multiple contributors
+
+  material_open_source_change:
+    discovery_signals:
+      - merged PR
+      - release note
+      - implementation documentation
+      - benchmark-bearing change
+    minimum_evidence:
+      - dated code change or release
+      - clear technical scope
+    strengthen_with:
+      - end-to-end recipe
+      - correctness tests
+      - benchmark
+      - downstream integration
+
+  runtime_kernel_cluster:
+    discovery_signals:
+      - multiple related PRs
+      - formal framework release
+      - new operator or kernel backend
+      - correctness and performance changes on one execution path
+    minimum_evidence:
+      - primary code or release sources
+    editorial_note: >
+      A routine compatibility PR normally stays full-only. Promote when changes form a coherent
+      execution-path story or enable a new workload.
+
+  conference_or_company_event:
+    discovery_signals:
+      - official agenda
+      - keynote
+      - workshop
+      - launch event
+      - conference proceedings
+    minimum_evidence:
+      - dated official event or proceedings page
+    strengthen_with:
+      - technical sessions
+      - reports, code or product launches tied to the event
+
+  production_or_system_evidence:
+    discovery_signals:
+      - production deployment
+      - cluster-scale benchmark
+      - customer or partner result
+      - latency, throughput, cost or utilization data
+    minimum_evidence:
+      - named workload and system context
+      - measurable result
+    strengthen_with:
+      - tail latency
+      - end-to-end throughput
+      - topology and hardware disclosure
+
+source_roles:
+  alert:
+    examples: [social post, search snippet, repost]
+    policy: Use for discovery only; verify important claims with a primary source.
+  primary:
+    examples: [official documentation, paper, repository PR or release, model card, official event page]
+  secondary:
+    examples: [independent technical analysis, media report]
+    policy: Use for context or independent confirmation, not as the sole source for strong claims.

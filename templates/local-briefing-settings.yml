@@ -1,0 +1,8 @@
+version: 1
+canonical_output:
+  directory: "{{absolute local directory}}"
+  filename_template: "briefing - {{edition}}.md"
+  combined_card_and_full: true
+finalize:
+  reread_canonical_file: true
+  update_history_from_file: true

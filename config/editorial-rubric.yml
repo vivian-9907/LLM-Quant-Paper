@@ -1,0 +1,55 @@
+version: 1
+scale: 0_to_5
+purpose: >
+  Decide briefing placement after discovery and technical verification. This score is separate
+  from radar relevance and must not be used to reduce discovery recall.
+
+dimensions:
+  weekly_novelty:
+    weight: 1.5
+    high: A new event, new evidence, new implementation or material status change occurred in the window.
+    low: The item only repeats an existing conclusion without a dated increment.
+  intuitive_news_value:
+    weight: 1.2
+    high: A reader can immediately understand what happened and why it matters.
+    low: The item is a narrow implementation detail requiring extensive background.
+  system_scope:
+    weight: 1.3
+    high: Affects an end-to-end model, API, training/serving path, production system or broad ecosystem.
+    low: A routine compatibility fix or isolated micro-optimization.
+  evidence_strength:
+    weight: 1.4
+    high: Primary source plus production data, reproducible artifact or well-scoped benchmark.
+    low: Marketing claim, unclear date, missing baseline or unverified self-report.
+  audience_relevance:
+    weight: 1.2
+    high: Directly informs LLM infrastructure, quantization, serving, training or deployment decisions.
+    low: Technically adjacent but unlikely to change the audience's understanding or action.
+  card_expressibility:
+    weight: 0.7
+    high: Name, event, impact and one caveat fit in one or two sentences without a link.
+    low: Value depends on a long methodological explanation.
+  duplication_penalty:
+    weight: -1.0
+    high: Duplicates another item or last week's conclusion without distinct new evidence.
+    low: Adds a clearly different event, layer, workload or maturity step.
+
+placement_guidance:
+  headline: Strong weekly novelty plus high news or system value and adequate primary evidence.
+  trend: Several independent candidates support one directional conclusion; retain their names.
+  full_only: Technically useful and evidenced, but too narrow, repetitive or detailed for the card.
+  watch: Potentially important but date, artifact, maturity or benchmark is incomplete.
+  archive: Low increment, weak evidence, out of window or no clear audience value.
+
+card_policy:
+  target_items: 4_to_7_but_do_not_fill
+  require:
+    - exact item or project name
+    - organization when known
+    - what changed this week
+    - one meaningful metric or technical consequence when available
+  caveats:
+    - public beta
+    - experimental
+    - author-reported benchmark
+    - code not yet available

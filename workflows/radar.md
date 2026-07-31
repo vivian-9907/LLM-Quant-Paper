@@ -43,6 +43,7 @@
 
 1. 读取 `config/channels.yml`，确定本轮 `channel`。
 2. 读取该频道的 `profile.yml`、`config/watchlist.yml`、`config/sources.yml` 和 `config/radar-rubric.yml`。
+2a. 读取 `workflows/discovery.md` 和 `config/event-taxonomy.yml`；已知实体/仓库监控与开放世界发现必须并行执行，前者不得成为白名单。
 3. 用频道 profile 生成主题搜索 query，用 watchlist 扩展每周固定关注实体的搜索 query；watchlist 用于召回和筛选，不代表最终报告必须覆盖每个实体。`ai-infra` 常规 radar 必须包含一组 architecture infra impact query，覆盖 attention architecture、KV-sharing / low-rank / grouped attention variants、sparse / linear / sliding-window / hybrid attention、MoE architecture、routed / shared / hierarchical experts、expert-choice routing、residual stream、Hyper-Connections、xHC/mHC、sparse residual paths、architecture scaling、training FLOPs、memory traffic、MoE pre-training efficiency 等词，避免只召回 serving/runtime 和 repo release。
 3a. `ai-infra` 常规 radar 必须执行 hardware platform smoke-check。不要把它当成可选补充。先读取 `profile.yml` 中 `required_smoke_checks.hardware_platform_reports`，并把 `exact_query_terms` 和 `official_source_terms` 作为本轮固定 query 组执行；这些 query 至少覆盖 Rubin、Blackwell、Instinct、TPU、AI Hypercomputer、NVLink、rack-scale、AI factory。若任一结果命中 official platform report、architecture deep dive、HBM/HBM4/memory bandwidth、interconnect/NVLink/fabric、rack-scale/NVL/AI factory、power/cooling/tokens per watt、MoE/all-to-all/expert routing、long-context attention/KV cache capacity、partner benchmark 或 deployment status，则必须展开 `hardware_platform_reports` 来源组并检查官方页面 / vendor blog。该 smoke-check 不应压过 serving/runtime、paper 和 repo activity 主线，但必须在运行元信息里写明执行过哪些硬件关键词、是否命中、是否展开，以及若未保留候选的原因。
 3b. `ai-infra` 常规 radar 必须执行 operator / kernel smoke-check。不要把它当成普通 repo activity 的可选子集；对有昇腾算子、CANN/ATB、CUDA/Triton/CUTLASS/FlashInfer 或硬件后端背景的读者，这是固定主线。先读取 `profile.yml` 中 `required_smoke_checks.operator_kernel_reports`，并把 `exact_query_terms` 和 `official_source_terms` 作为本轮固定 query 组执行；这些 query 至少覆盖 Ascend CANN、ATB、torch-npu、Triton、FlashInfer、CUTLASS、cuDNN Frontend、TensorRT-LLM kernel、SGLang kernel、vLLM kernel、ROCm、MoE GEMM、MLA kernel、FlashAttention、fused operator。若任一结果命中 CANN/ATB/torch-npu release note、Ascend NPU kernel/operator、custom/fused operator、Triton/CUTLASS/FlashInfer/cuDNN Frontend release、runtime kernel backend integration、MLA/FlashMLA/FlashAttention/GQA/MQA、MoE GEMM/grouped GEMM/fused MoE、FP8/FP4/NVFP4/MXFP4/INT4 low-bit kernel path、TMA/WGMMA/TMEM/blockscale/swizzle/layout optimization、ROCm/HIP/gfx950/backend path，或带 latency/throughput/bandwidth/occupancy/memory traffic 的 benchmark，则必须展开 `operator_kernel_reports` 来源组并检查对应 release / PR / changelog / official page。该 smoke-check 不应压过 serving/runtime、paper 和硬件主线，但必须在运行元信息里写明执行过哪些算子关键词、是否命中、是否展开，以及若未保留候选的原因。
@@ -50,8 +51,10 @@
 5. 当 source_scope 包含 papers / arxiv / github / rss / vendor_blogs / repo_activity，用户指定作者/实验室/maintainer，或候选归因有助于排序时，读取 `config/experts.yml` 和/或 `config/venues.yml`。专家和会议只用于 query expansion、venue context、attribution 和 signal weighting，不能替代保留标准；`primary_channels` 命中强于 `related_channels`，后者只作为弱相关信号或排序 tie-breaker。
 6. 默认不要读取 `topics.full.yml` 和频道 research map；只有在专项扫描、召回不足、分类不确定、需要方向观察或用户明确要求完整覆盖时才展开读取。
 7. 在指定时间范围和来源范围内搜索。
+7a. 按事件槽位补充通用搜索：模型/API、论文/技术报告、新开源项目、已有项目重要合入、runtime/kernel 工作簇、会议/公司活动、生产系统证据和上期主线增量。全局 GitHub discovery 不受 `tracked-repos.yml` 限制。
 8. 如果用户给出领域限定，先按“领域限定与软过滤”确定本轮核心子类和允许保留的相邻子类。
 9. 先用频道 profile、watchlist 和 `config/radar-rubric.yml` 的 `prefilter_gates` 做主题过滤；未通过过滤的条目直接丢弃或标记为 `ignore`。
+9a. 召回阶段允许证据不完整；未通过后续核验或初筛的候选保留最小记录与过滤原因，不直接从候选账本消失。
 10. 对领域限定场景，再用软过滤判断条目是核心候选、相邻候选还是应过滤条目；相邻候选必须能解释其关系。
 11. 读取本频道在 `config/channels.yml` 中配置的 `template`；如果未配置，则使用 `templates/radar-result.md` 作为 fallback。
 12. 将通过过滤的结果整理成 Briefing Card。每条保持轻量，默认 2-5 行，避免长摘要：
@@ -84,10 +87,13 @@
 20. 在输出开头给出“本轮方向摘要”：哪些子类强、哪些子类弱、哪些子类满足方向观察条件、哪些子类暂不展开以及原因。
 21. 按频道模板输出轻量简报，不默认输出大表格。`ai-infra` 的 full report 顺序是：新模型与 agent 产品、新论文趋势、高优先级论文、高价值技术报告 / 架构报告 / 工程文章、高优先级开源项目、重要仓库 PR / Release 趋势。`quantization` 的顺序是：新模型与量化 artifact、新论文趋势、高优先级论文、高优先级开源项目、高价值技术博客 / 工程文章、重要仓库 PR / Release 趋势。
 21a. 当频道配置了 `digest_template` 且需要保存结果时，同时生成工作群短简报，写入该频道 `outputs.digest` 对应目录。短简报不替代 full report；它只保留一句话结论、新模型 / Agent 产品或新模型 / 量化 Artifact、本周必看、本周趋势、可跳过和完整版链接。
+21b. 保存结果时，同时按 `templates/candidate-ledger.yml` 输出结构化候选，供跨频道 briefing 去重和编辑；频道 digest 不是最终群发版的唯一来源。
 22. 只有当“本轮方向摘要”已经点名某个子类满足条件时，才补充“方向观察”。方向观察要总结方向级信号、共同点、分歧和下一步，而不是重复单条候选。
 23. 如果某个子类本轮信号明显，可以补充方向观察；证据不足时必须写入“暂不展开的子类及原因”。
 24. 如果用户已有历史表格或明确要求维护历史记录，可以追加“历史表格”；第一版默认只预留，不强制维护。
 25. 如果没有高价值结果，直接说明；只有在有帮助时才列出少量 near-miss。
+25a. 输出前执行 `workflows/discovery.md` 的 closing sweep，重新检查窗口末 48 小时，并记录事件槽位覆盖、来源失败和人工补录状态。
+25b. 若用户要生成最终周简报，转入 `workflows/briefing.md`，不要直接拼接两个频道 digest。
 
 ## 来源说明
 
