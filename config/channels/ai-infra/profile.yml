@@ -13,6 +13,7 @@ core_focus:
   - MoE systems, expert parallelism, dispatch/combine, communication overlap
   - distributed training, parallelism, checkpointing, optimizer sharding
   - CUDA / Triton / CUTLASS / FlashInfer / Ascend CANN / ATB kernels and operator fusion
+  - kernel compiler research: GPU DSL/IR, hardware-explicit schedules, agentic kernel generation/evolution, verifier, cost model, compiler diagnostics and library generalization; prioritize NVIDIA Research and NVIDIA upstream artifacts
   - hardware platform updates with infra impact: memory bandwidth, interconnect, tensor cores, rack-scale systems, power/cooling, cost efficiency and low-bit hardware paths that change serving/training bottlenecks
   - attention architecture with infra impact: KV-sharing / low-rank / grouped attention variants, sparse / linear / hybrid attention, state-space-style blocks, long-context attention and KV/cache shape changes
   - MoE architecture with infra impact: sparse expert models, routed experts, shared experts, expert choice, hierarchical MoE, DeepSeek/GLM/Mixtral-style routing and load-balancing changes
@@ -102,6 +103,7 @@ strong_signals:
   - explicit latency, throughput, memory, scaling, MFU, TTFT/TPOT/P99 or cost result
   - concrete runtime/framework/kernel/hardware detail
   - concrete operator or compiler-backend detail such as CANN/ATB/torch-npu, Triton, CUTLASS, FlashInfer, cuDNN Frontend, fused MoE, MLA/FlashAttention, low-bit GEMM, TMA/WGMMA/TMEM, ROCm/HIP or Ascend NPU support
+  - compiler-agent or kernel-generation work with a concrete IR/schedule representation, correctness verifier, cost model, localized diagnostics, hardware mapping, end-to-end kernel benchmark or upstream integration
   - hardware platform detail that affects memory bandwidth, interconnect, low-bit execution, rack-scale communication, KV cache capacity, MoE weight movement, power/cooling, cost efficiency or deployment cost
   - architecture change that affects compute graph, memory, communication, training FLOPs, memory traffic or serving shape
   - attention or MoE architecture change that affects KV cache layout, prefill/decode cost, routing, all-to-all, expert parallelism, kernel/operator shape, batching, long-context serving or training efficiency

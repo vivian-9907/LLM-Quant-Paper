@@ -47,6 +47,12 @@ source_groups:
     - github_activity
     - vendor_blogs
     - rss
+  kernel_compiler:
+    - arxiv
+    - github
+    - github_activity
+    - vendor_blogs
+    - rss
   briefing_required:
     - official_model_blogs
     - vendor_blogs
@@ -248,6 +254,8 @@ sources:
         url: https://z.ai/blog
       - name: NVIDIA official blog
         url: https://blogs.nvidia.com/
+      - name: NVIDIA Research publications
+        url: https://research.nvidia.com/publications
       - name: OpenAI news
         url: https://openai.com/news/
       - name: Anthropic news
@@ -275,6 +283,13 @@ sources:
       - benchmark
       - quantization
       - kernel
+      - kernel compiler
+      - GPU DSL
+      - intermediate representation
+      - compiler-agent co-design
+      - kernel generation
+      - verifier
+      - cost model
       - framework release
       - agent product
       - coding agent

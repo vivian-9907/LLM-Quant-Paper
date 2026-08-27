@@ -326,6 +326,27 @@ priority_technical_blogs:
     url: https://lmsys.org/blog/
     kind: project
 
+technical_research_focus:
+  - name: NVIDIA kernel compiler research
+    organization: NVIDIA
+    priority: high
+    mandatory_smoke_check: false
+    official_pages:
+      - https://research.nvidia.com/publications
+      - https://developer.nvidia.com/blog/
+      - https://github.com/NVIDIA
+    watch_for:
+      - compiler-agent co-design
+      - agentic GPU kernel generation
+      - GPU DSL and intermediate representation
+      - hardware-explicit scheduling
+      - verifier and cost model
+      - compiler diagnostics
+      - CUDA/PTX/SASS generation
+      - CUTLASS/CuTe integration
+      - Triton or MLIR backend
+      - upstream kernel or library integration
+
 hardware_platforms:
   - name: Hardware platform reports
     aliases:

@@ -17,6 +17,12 @@ systems value, not generic model news.
   NVLink/InfiniBand/HCCL/NCCL behavior.
 - Kernels/operators: attention, GEMM, MoE, RoPE, norm, quant/dequant, fused
   kernels, Triton/CUDA/CUTLASS implementation paths.
+- Kernel compilers: GPU DSL/IR, hardware-explicit schedule representations,
+  warp specialization, memory movement and synchronization contracts, verifier,
+  cost model, compiler diagnostics, autotuning, agentic kernel generation and
+  evolution, plus promotion from single-shape kernels to dispatched libraries.
+  Give extra weight to NVIDIA Research and work that lands in NVIDIA kernels,
+  compiler backends, libraries or upstream runtime integrations.
 - Hardware platforms with infra impact: GPU / accelerator architecture, HBM,
   NVLink/NVSwitch, rack-scale systems, tensor cores, low-bit hardware formats
   and power/cooling constraints when they change serving/training bottlenecks,

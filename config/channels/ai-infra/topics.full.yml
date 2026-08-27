@@ -135,6 +135,33 @@ core_topics:
       - kernel optimization
       - operator implementation
 
+  kernel_compilers:
+    description: GPU kernel 编译、DSL/IR、自动调优与 agentic kernel evolution。重点关注 NVIDIA Research 及能进入 NVIDIA kernel/library/runtime 路径的工作；这是常规研究主题，不是强制 smoke check。
+    include:
+      - GPU kernel compiler
+      - compiler-agent co-design
+      - agentic kernel generation
+      - kernel synthesis
+      - kernel evolution
+      - GPU DSL
+      - hardware-explicit IR
+      - schedule representation
+      - warp specialization
+      - memory movement
+      - synchronization verifier
+      - kernel verifier
+      - compiler diagnostics
+      - cost model
+      - autotuning
+      - library generalization
+      - kernel dispatch
+    synonyms:
+      - LLM-driven kernel generation
+      - autonomous kernel optimization
+      - compiler harness
+      - schedule search
+      - program synthesis for GPU kernels
+
   gpu_architecture_and_hardware_platforms:
     description: 硬件平台、互联、内存层级、rack-scale 系统和低比特硬件路径。只在影响 LLM serving/training bottleneck 时保留。
     include:
