@@ -23,11 +23,12 @@ closing_sweep:
   lookback_hours: 72
   required: true
   required_source_classes:
-    - watched_official_blogs
-    - model_cards_and_api_changelogs
-    - tracked_repository_releases
-    - nvidia_technical_blog_and_release_notes
-    - new_high_signal_organization_official_blog
+    - official_model_blogs
+    - nvidia_technical
+    - repository_releases
+    - hardware_platforms
+    - independent_blogs
+    - emerging_official_domains
   rules:
     - Recheck publication time, release status and first-party links at the end of the window.
     - A newly important organization must trigger an official-domain sweep even when absent from the watchlist.
@@ -71,4 +72,3 @@ quality_gates:
     - 下一窗口观察清单
     - 来源与核验
     - 技术趋势
-

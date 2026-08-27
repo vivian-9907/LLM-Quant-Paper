@@ -61,6 +61,9 @@ const replacements = {
   NAVIGATION: navigation, QUICK_CONTENT: quickContent, FULL_CONTENT: fullContent,
   GENERATED_AT: new Date().toISOString()
 };
+for (const key of ['DOCUMENT_TITLE', 'WINDOW', 'DATE_TITLE', 'DEK', 'QUICK_TITLE', 'FULL_TITLE', 'GENERATED_AT']) {
+  replacements[key] = escapeHtml(replacements[key]);
+}
 let html = template;
 for (const [key, value] of Object.entries(replacements)) html = html.replaceAll(`{{${key}}}`, value);
 fs.mkdirSync(path.dirname(output), {recursive:true});
