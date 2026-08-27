@@ -1,4 +1,4 @@
 interface:
-  display_name: "LLM Infra Briefing"
-  short_description: "发现、复核并生成 LLM Infra 双版本简报。"
-  default_prompt: "使用 $llm-infra-briefing 运行量化与 AI Infra radar，合并候选和人工补录，并生成群发版与带来源的正式版。"
+  display_name: LLM Infra Briefing
+  short_description: 多视角发现、复核并生成单页 HTML LLM Infra 简报。
+  default_prompt: 使用 $llm-infra-briefing 运行多视角扫描，合并统一候选池，并生成含 3 分钟直觉版和全量版的单页 HTML。

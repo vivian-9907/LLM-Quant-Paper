@@ -1,11 +1,16 @@
-version: 1
-default_channel: quantization
+version: 2
+default_scanners:
+  - quantization
+  - ai-infra
+publication_config: config/briefing.yml
 watchlist: config/watchlist.yml
 tracked_repos: config/tracked-repos.yml
 experts: config/experts.yml
 venues: config/venues.yml
 
-channels:
+# These are recall scanners, not publication channels. Their results merge into
+# one candidate pool before briefing selection.
+scanners:
   quantization:
     description: LLM quantization, low-bit compression, KV cache compression, multimodal quantization, runtime/kernel integration.
     profile: config/channels/quantization/profile.yml

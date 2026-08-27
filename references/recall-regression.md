@@ -20,6 +20,15 @@
 
 ## 通过标准
 
+### 2026-08-26 官方技术博客
+
+- 样本：Z.ai 的 GLM-5.3-Flash 官方技术博客。
+- 期望事件：model_api_or_agent_release，同时带 architecture、hardware、serving topics。
+- 期望路径：重点官方博客 closing sweep；即使 Z.ai 未预先进入 watchlist，也应由新单位官方域名补扫发现。
+- 失败条件：只检查模型 hub 或 GitHub release；把官方博客当普通营销新闻提前过滤；没有识别稀疏/线性注意力、mHC、国产芯片 serving 等技术增量。
+- 自动样例：tests/fixtures/edition.json。
+
+
 - 两类事件都进入候选账本，不要求自动进入 headline；
 - 日期、来源角色、成熟度和技术增量可核验；
 - 召回不依赖样本实体出现在 watchlist 或 tracked-repos；

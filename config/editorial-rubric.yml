@@ -36,12 +36,13 @@ dimensions:
 
 placement_guidance:
   headline: Strong weekly novelty plus high news or system value and adequate primary evidence.
-  trend: Several independent candidates support one directional conclusion; retain their names.
+  recommended: A paper, official technical document or technical blog with a concrete mechanism, implementation or result worth reading.
   full_only: Technically useful and evidenced, but too narrow, repetitive or detailed for the card.
-  watch: Potentially important but date, artifact, maturity or benchmark is incomplete.
+  context: Background needed to understand an in-window event; always label the original date.
+  risk: Potentially important RC, preview, known issue or incomplete artifact that changes an engineering decision.
   archive: Low increment, weak evidence, out of window or no clear audience value.
 
-card_policy:
+quick_policy:
   target_items: 4_to_7_but_do_not_fill
   require:
     - exact item or project name

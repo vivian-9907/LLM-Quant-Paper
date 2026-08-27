@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 source_groups:
   all:
@@ -47,8 +47,54 @@ source_groups:
     - github_activity
     - vendor_blogs
     - rss
+  briefing_required:
+    - official_model_blogs
+    - vendor_blogs
+    - hardware_platform_reports
+    - operator_kernel_reports
+    - independent_technical_blogs
+    - github_releases
 
 sources:
+  official_model_blogs:
+    type: rss_or_web
+    closing_sweep_required: true
+    candidate_pages:
+      - name: Z.ai research blog
+        organization: Z.ai / Zhipu AI
+        url: https://z.ai/blog
+        priority: critical
+        notes: Check dated model, training, serving, architecture and infrastructure posts; GLM-5.3-Flash on 2026-08-26 is a recall-regression example.
+      - name: Qwen blog
+        organization: Alibaba Qwen
+        url: https://qwenlm.github.io/blog/
+        priority: critical
+      - name: DeepSeek news
+        organization: DeepSeek
+        url: https://api-docs.deepseek.com/news
+        priority: critical
+      - name: OpenAI news
+        organization: OpenAI
+        url: https://openai.com/news/
+      - name: Anthropic news
+        organization: Anthropic
+        url: https://www.anthropic.com/news
+      - name: Google DeepMind blog
+        organization: Google DeepMind
+        url: https://deepmind.google/discover/blog/
+      - name: Meta AI blog
+        organization: Meta AI
+        url: https://ai.meta.com/blog/
+      - name: Mistral AI news
+        organization: Mistral AI
+        url: https://mistral.ai/news/
+    open_world_policy:
+      trigger_when:
+        - a new organization releases a high-signal model, system, hardware platform or open-source artifact
+        - two independent alerts point to the same organization during the window
+        - a new model appears in a major runtime release or model hub before the organization is tracked
+      action: Resolve the official domain, scan its dated blog/news/changelog for the full window, and record the domain in coverage.
+      retention: Add recurring high-signal official domains after editorial review; first discovery must not require a hard-coded entity rule.
   arxiv:
     type: api
     base_url: https://export.arxiv.org/api/query
@@ -177,6 +223,8 @@ sources:
         url: https://developer.nvidia.com/blog/feed
       - name: Hugging Face blog
         url: https://huggingface.co/blog/feed.xml
+      - name: 科学空间
+        url: https://kexue.fm/feed
     candidate_pages:
       - name: vLLM blog
         url: https://vllm.ai/blog
@@ -196,6 +244,8 @@ sources:
       - name: Google DeepMind blog
         url: https://deepmind.google/discover/blog/rss.xml
     candidate_pages:
+      - name: Z.ai research blog
+        url: https://z.ai/blog
       - name: NVIDIA official blog
         url: https://blogs.nvidia.com/
       - name: OpenAI news
@@ -233,6 +283,24 @@ sources:
       - GitHub integration
       - tool use
     notes: 跟踪官方模型发布、agent 产品更新、技术博客和框架公告。过滤掉只有营销描述、没有技术细节或没有 infra/quantization/agent 关联的普通新闻。
+
+  independent_technical_blogs:
+    type: rss_or_web
+    candidate_pages:
+      - name: 科学空间 / 苏剑林
+        url: https://kexue.fm/
+        feed: https://kexue.fm/feed
+        focus:
+          - model architecture
+          - training objectives
+          - attention and positional encoding
+          - long context
+          - technical model analysis
+    discovery_policy:
+      - Track named high-signal experts, but also discover technical posts linked by papers, repositories and official releases.
+      - A blog is context or recommended reading unless it is itself the dated technical release.
+      - Preserve the distinction between the blog publication date and the model or paper date it discusses.
+    notes: 只保留有推导、机制拆解、实验或实现细节的文章；观点性转述和普通新闻摘要过滤。
 
   hardware_platform_reports:
     type: rss_or_web

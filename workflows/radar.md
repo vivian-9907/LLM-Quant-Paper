@@ -92,8 +92,8 @@
 23. 如果某个子类本轮信号明显，可以补充方向观察；证据不足时必须写入“暂不展开的子类及原因”。
 24. 如果用户已有历史表格或明确要求维护历史记录，可以追加“历史表格”；第一版默认只预留，不强制维护。
 25. 如果没有高价值结果，直接说明；只有在有帮助时才列出少量 near-miss。
-25a. 输出前执行 `workflows/discovery.md` 的 closing sweep，重新检查窗口末 48 小时，并记录事件槽位覆盖、来源失败和人工补录状态。
-25b. 若用户要生成最终周简报，转入 `workflows/briefing.md`，不要直接拼接两个频道 digest。
+25a. 输出前执行 `workflows/discovery.md` 的 closing sweep，重新检查窗口末 72 小时，并记录必查 source class、事件槽位覆盖、来源失败和人工补录状态。
+25b. 若用户要生成最终周简报，转入 `workflows/briefing.md`，把所有 scanner 候选合并为统一事件池，不要直接拼接频道 digest。
 
 ## 来源说明
 

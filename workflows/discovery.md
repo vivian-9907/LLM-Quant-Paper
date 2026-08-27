@@ -24,6 +24,14 @@
 
 GitHub 搜索必须同时覆盖 tracked repos 和全局 repository / release / merged PR 搜索。不要把“新开源项目”限制为新建仓库；已有项目首次合入端到端能力也属于新事件。
 
+## 官方博客与技术博客
+
+- 每次 briefing 必须读取 `config/briefing.yml` 的 closing sweep 和 `config/sources.yml` 的 `briefing_required`。
+- 固定检查重点模型单位官方博客、NVIDIA Technical Blog、硬件平台报告、核心 runtime/repo release 与重点独立技术博客。
+- watchlist 不是召回边界：窗口内出现新的高信号单位时，解析其官方域名并补扫完整窗口的 blog/news/changelog。
+- 博客讨论旧模型或旧论文时，分别记录“博客发布日期”和“被讨论对象日期”，不得把背景对象误写成本期发布。
+- 技术博客只有在提供机制、推导、实验、系统数据或实现细节时进入候选；普通新闻摘要归档。
+
 ## 事件槽位
 
 每次常规 radar 必须检查以下槽位，即使结果为空：
@@ -63,9 +71,11 @@ GitHub 搜索必须同时覆盖 tracked repos 和全局 repository / release / m
 
 ## Closing sweep
 
-生成最终候选池前重新检查窗口末 48 小时：官方更新与 changelog、新模型/API/公开测试、GitHub release 和 merged PR、新论文版本与关联代码，以及当周大会或临近截止日的技术发布。
+生成最终候选池前重新检查窗口末 72 小时：官方更新与 changelog、新模型/API/公开测试、GitHub release 和 merged PR、新论文版本与关联代码，以及当周大会或临近截止日的技术发布。
 
 Closing sweep 发现的内容走同样的核验流程，不因出现较晚而自动进入简报。
+
+必须对以下槽位记录“已检查/有结果/空结果/访问失败”：重点官方模型博客、NVIDIA 技术博客及 release notes、硬件平台、核心 runtime/repo release、重点独立技术博客、新出现高信号单位的官方域名。缺少任一记录时不得进入出版阶段。
 
 ## 覆盖记录
 

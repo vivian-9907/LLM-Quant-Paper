@@ -1,0 +1,74 @@
+version: 2
+
+purpose: >
+  Build one LLM Infra briefing from multiple recall perspectives. Quantization,
+  hardware, kernels, systems, repositories and technical blogs are scanners and
+  tags, not separate publication channels.
+
+recall:
+  scanners:
+    - model_and_api_releases
+    - runtime_and_repository_changes
+    - quantization_and_low_bit
+    - hardware_and_interconnect
+    - kernels_and_compilers
+    - systems_and_architecture_papers
+    - official_technical_blogs
+    - independent_expert_blogs
+  merge_into_one_candidate_pool: true
+  deduplicate_by_event: true
+  allow_multiple_topics_per_event: true
+
+closing_sweep:
+  lookback_hours: 72
+  required: true
+  required_source_classes:
+    - watched_official_blogs
+    - model_cards_and_api_changelogs
+    - tracked_repository_releases
+    - nvidia_technical_blog_and_release_notes
+    - new_high_signal_organization_official_blog
+  rules:
+    - Recheck publication time, release status and first-party links at the end of the window.
+    - A newly important organization must trigger an official-domain sweep even when absent from the watchlist.
+    - Search snippets and social posts are alerts only; promote claims only after primary-source verification.
+    - Log an explicit empty result for every required source class instead of silently skipping it.
+
+publication:
+  canonical_source: edition.json
+  primary_artifact: briefing.html
+  optional_artifacts:
+    - briefing.md
+  one_page: true
+  quick_section_title: 3 分钟直觉版
+  full_section_title: 全量版
+  title_style: date_range
+  default_theme: pink-purple
+  category_order:
+    - models
+    - repositories
+    - quantization
+    - hardware
+    - systems
+    - kernels
+    - technical_blogs
+  editorial_contract:
+    - Prefer dated technical deltas over generic trends.
+    - Keep model, repository and paper names explicit.
+    - Write each full item as point, evidence, boundary and use.
+    - Label background, preannouncement, preview and author-reported results.
+    - Do not force a one-sentence trend or takeaway.
+    - Do not publish team advice, next-window watchlists or verification appendices by default.
+
+quality_gates:
+  require_primary_source_for_quick_items: true
+  require_window_role: true
+  require_boundary_for_non_window_items: true
+  require_release_maturity: true
+  require_sidebar_anchor_integrity: true
+  forbidden_default_sections:
+    - 对团队的建议
+    - 下一窗口观察清单
+    - 来源与核验
+    - 技术趋势
+

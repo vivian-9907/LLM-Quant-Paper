@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "edition": "Recall regression · 2026-08-26",
+  "window": {"start": "2026-08-15", "end": "2026-08-27"},
+  "coverage": {
+    "closingSweepAt": "2026-08-27T09:00:00+08:00",
+    "sourceClasses": {
+      "official_model_blogs": "checked_with_hits",
+      "nvidia_technical": "checked_empty",
+      "repository_releases": "checked_empty",
+      "hardware_platforms": "checked_empty",
+      "independent_blogs": "checked_empty",
+      "emerging_official_domains": "checked_with_hits"
+    }
+  },
+  "presentation": {"theme": "pink-purple", "quickTitle": "3 分钟直觉版", "fullTitle": "全量版"},
+  "dek": "GLM-5.3-Flash 于 8 月 26 日发布，架构、低成本 serving 与国产芯片部署信号应在 closing sweep 中同时被召回。",
+  "items": [
+    {
+      "id": "glm-5-3-flash",
+      "title": "GLM-5.3-Flash",
+      "organization": "Z.ai / Zhipu AI",
+      "eventDate": "2026-08-26",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "category": "models",
+      "quick": true,
+      "editorialRole": "headline",
+      "point": "320B 总参数、18B 激活参数，首次在 GLM-5 系列中引入原生多模态与稀疏/线性注意力混合架构。",
+      "evidence": "官方同时披露 mHC、30T-token 多模态预训练语料，以及全部匿名测试流量由国产 AI 芯片承载。",
+      "boundary": "性能、价格与芯片承载结论来自厂商自报，仍需独立 runtime 数据核验。",
+      "use": "同时影响长上下文 serving、低成本模型选择、国产芯片适配与新架构跟踪。",
+      "facts": ["官方标价口径为相对 GLM-5.2 约十分之一成本", "匿名测试名为 ox-alpha"],
+      "topics": ["model-release", "architecture", "hardware", "serving"],
+      "sources": [
+        {"label": "Z.ai 官方技术博客", "url": "https://z.ai/blog/glm-5.3-flash", "role": "primary", "publishedAt": "2026-08-26"}
+      ]
+    }
+  ]
+}

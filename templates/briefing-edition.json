@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "edition": "{{edition}}",
+  "window": {
+    "start": "{{YYYY-MM-DD}}",
+    "end": "{{YYYY-MM-DD}}"
+  },
+  "coverage": {
+    "closingSweepAt": "{{ISO-8601}}",
+    "sourceClasses": {
+      "official_model_blogs": "checked_with_hits",
+      "nvidia_technical": "checked_empty",
+      "repository_releases": "checked_empty",
+      "hardware_platforms": "checked_empty",
+      "independent_blogs": "checked_empty",
+      "emerging_official_domains": "checked_empty"
+    }
+  },
+  "presentation": {
+    "theme": "pink-purple",
+    "quickTitle": "3 分钟直觉版",
+    "fullTitle": "全量版"
+  },
+  "dek": "{{one factual sentence naming the most important releases in this window}}",
+  "items": [
+    {
+      "id": "{{stable-event-id}}",
+      "title": "{{exact model, repository, paper or article name}}",
+      "organization": "{{organization}}",
+      "eventDate": "{{YYYY-MM-DD}}",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "category": "models",
+      "quick": true,
+      "editorialRole": "headline",
+      "point": "{{what changed}}",
+      "evidence": "{{mechanism, metric or implementation evidence}}",
+      "boundary": "{{vendor-reported, author-reported, preview or other boundary}}",
+      "use": "{{why a technical reader should care}}",
+      "facts": [],
+      "topics": [],
+      "sources": [
+        {
+          "label": "{{primary source label}}",
+          "url": "https://example.com",
+          "role": "primary",
+          "publishedAt": "{{YYYY-MM-DD}}"
+        }
+      ]
+    }
+  ]
+}

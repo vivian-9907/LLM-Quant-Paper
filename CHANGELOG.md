@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0 - HTML-first unified briefing
+
+- Reframed quantization and AI Infra as recall scanners that merge into one event pool.
+- Added edition.json as the canonical publication source and a single-page HTML renderer with 3-minute and full sections.
+- Added editorial lint for window roles, primary sources, maturity, background boundaries and required closing-sweep source classes.
+- Added required scans for official model blogs, NVIDIA technical sources, hardware, repository releases, expert blogs and newly important official domains.
+- Added Z.ai / GLM and GLM-5.3-Flash as a recall-regression fixture.
+
 ## v0.9 - Recall and editorial pipeline
 
 - Added event-based discovery that runs known-ecosystem monitoring and open-world discovery in parallel.

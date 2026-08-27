@@ -1,8 +1,12 @@
-version: 1
-edition: "{{edition}}"
+version: 2
+edition: EDITION
 window:
-  start: "{{YYYY-MM-DD}}"
-  end: "{{YYYY-MM-DD}}"
-canonical_final_path: "{{absolute path actually used}}"
-last_generated_at: "{{ISO-8601 timestamp}}"
-last_finalized_at: ""
+  start: YYYY-MM-DD
+  end: YYYY-MM-DD
+canonical_source: edition.json
+canonical_artifact: briefing.html
+renderer: scripts/render-briefing.mjs
+lint: scripts/lint-briefing.mjs
+status: draft
+last_generated_at: ISO-8601
+last_finalized_at:

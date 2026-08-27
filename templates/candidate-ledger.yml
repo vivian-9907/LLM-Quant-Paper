@@ -1,32 +1,38 @@
-# Repeat this object for every normalized candidate.
-- id: "{{stable_event_id}}"
-  title: "{{title}}"
-  organization: "{{organization_or_unknown}}"
-  event_type: "{{event_type_from_config}}"
-  event_date: "{{YYYY-MM-DD}}"
-  channels: []
+# Canonical v1.0 candidate object. Repeat for every normalized event.
+- id: stable_event_id
+  title: exact_title
+  organization: organization_or_unknown
+  event_type: event_type_from_config
+  event_date: YYYY-MM-DD
+  window_role: in_window|background|preannouncement
+  topics: []
   origin:
-    mode: "{{radar|manual}}"
+    mode: radar|manual
     discovered_via: []
   summary:
     what_happened: ""
     technical_delta: ""
     why_it_matters: ""
-    linkless_sentence: ""
   evidence:
     primary_sources: []
     secondary_sources: []
     reported_metrics: []
-    artifact_status: "{{none|announced|available|runnable}}"
-    maturity: "{{research|experimental|beta|production|ga}}"
-    verification_status: "{{unverified|partial|verified}}"
+    artifact_status: none|announced|available|runnable
+    maturity: research|experimental|preview|rc|beta|production|ga
+    verification_status: unverified|partial|verified
   relation_to_previous:
-    status: "{{new|new_evidence|new_implementation|continuation|repeat_only}}"
+    status: new|new_evidence|new_implementation|continuation|repeat_only
     note: ""
   decisions:
-    radar: "{{inspect|track-code|replicate|skim|watch|ignore}}"
-    briefing: "{{headline|trend|full_only|watch|archive}}"
+    radar: inspect|track-code|replicate|skim|watch|ignore
+    briefing: headline|recommended|full_only|context|risk|archive
     rationale: []
+  publication:
+    quick: false
+    point: ""
+    evidence: ""
+    boundary: ""
+    use: ""
   miss_feedback:
     was_manual_miss: false
     cause: ""

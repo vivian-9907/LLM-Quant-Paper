@@ -1,108 +1,88 @@
-# Briefing 编辑工作流
+# Briefing HTML-first 出版工作流
 
-## 输入
+本文件是 v1.0 的默认 briefing 规范。
+
+## 目标
+
+从多个召回视角构建统一候选池，以单页 HTML 作为最终产物。HTML 同时包含“3 分钟直觉版”和“全量版”；量化、硬件、kernel、runtime、论文与技术博客是扫描视角和标签，不是互斥频道。
+
+## 必要输入
 
 - 时间窗口；
-- `ai-infra` 与 `quantization` radar 候选；
-- `inputs/manual/` 中落入窗口的人工补录；
-- `history/editions.yml` 中当前窗口之前最近一期的结构化快照。
+- ai-infra、quantization 以及其他专题 scanner 候选；
+- 人工补录与最近一期历史快照；
+- `config/briefing.yml` 的出版契约和 closing sweep 要求。
 
-若频道 radar 尚未运行，先按 `workflows/radar.md` 和 `workflows/discovery.md` 运行。人工补录不要求重跑全部检索，但必须核验并重新计算相关主题的选题与摘要。
+所有 scanner 结果进入一个候选池。一个事件可以同时带有 quantization、hardware、kernel、runtime 等多个 topics。
 
-## 最终稿与手工润色
+## 候选与时间角色
 
-- 若存在 `local/briefing.yml`，生成 briefing 时同时解析最终稿的实际路径，并写入本期 `outputs/briefing/<date_range>/manifest.yml`；本地配置和 manifest 都不提交 Git。
-- 第一次生成时可以把包含群发版与正文版的组合稿写到 canonical final path。之后若该文件可能已被用户手工修改，任何自动更新必须先重新读取现有文件，并只修改用户要求的部分；不得用旧草稿整文件覆盖。
-- `briefing finalize <path>` 优先使用显式路径；未提供路径时读取本期 manifest 的 `canonical_final_path`；仍没有时才使用仓库内的 `briefing-full.md`。
-- Finalize 必须重新读取磁盘上的实际最终文件，从其中重新提取 takeaway、群发入选项、主题判断、full-only items 和 next watch，再 upsert `status: final` 的历史快照。
-- 若 canonical 文件不存在或无法读取，停止 finalize 并要求路径；不得用生成阶段的 draft 快照冒充最终稿。
+同一发布的公告、模型卡、仓库适配和技术文档合并为一个事件，但保留各来源的证据角色。博客讨论旧模型时，分别记录博客发布日期和被讨论对象日期。
 
-## 统一候选池
+每个出版条目必须填写：
 
-把所有来源规范化到 `templates/candidate-ledger.yml` 的字段。按事件而不是按链接去重：
+- `eventDate`；
+- `windowRole`：`in_window`、`background` 或 `preannouncement`；
+- `maturity`：released、preview、RC、research 等；
+- `editorialRole`：headline、recommended、full_only、context、risk 或 archive；
+- `point`、`evidence`、`boundary`、`use`；
+- 一手来源；进入 3 分钟版的条目必须有一手来源。
 
-- 同一发布的社交消息、文档和模型卡合并为一个事件；
-- 同一论文的 arXiv、项目页和代码合并；
-- 同一技术主线的多篇独立工作保持各自名称，但可组成一个版面主题；
-- 同一 PR 在两个频道出现时只保留一份事件记录和多个频道标签。
+窗口外内容只能作为明确背景。厂商 benchmark、作者自报结果、preview、RC 和尚未开放的 artifact 必须直接写明边界。
 
-## 历史选择与写回
+## 72 小时 Closing sweep
 
-1. 读取 `history/editions.yml`；
-2. 过滤 `window.end < 当前窗口 start` 的记录；
-3. 优先选择 `status: final` 且 `window.end` 最大的一期；若只有最近的 `draft`，可使用，但必须在复核记录中提示；
-4. 若历史为空但用户提供上一期文件，先按 `templates/edition-history.yml` 导入快照；
-5. 若两者都没有，明确标记无历史对照，不编造“上周”；
-6. 每次成功生成或修改 briefing 后，按 `window.start + window.end` 对 `history/editions.yml` 执行 upsert：不存在则新增，已存在则原位覆盖，不追加重复记录；
-7. 自动写入 `status: draft`、`created_at` 和 `updated_at`；`briefing add` 或后续编辑完成后再次 upsert，确保快照始终对应最新草稿；
-8. 当用户说“定稿”“最终版”或执行 `briefing finalize` 时，按“最终稿与手工润色”重新读取 canonical 文件，用磁盘上的实际内容重建并 upsert `status: final` 的快照。
+生成 edition 前，必须逐项检查并记录“有结果、空结果或访问失败”：
 
-历史快照只保存比较所需的结论、入选项、主题状态和 next watch；完整正文仍留在 `outputs/briefing/`。用户不需要手工编辑历史文件。
+1. 重点模型单位官方 blog、news、API changelog；
+2. NVIDIA Technical Blog、release notes 与硬件平台资料；
+3. 核心 runtime、kernel、compiler、communication 仓库 release；
+4. 重点独立技术博客；
+5. 窗口中新出现的高信号单位官方域名；
+6. 模型卡、论文新版本、代码和 artifact。
 
-## 与上期比较
+Watchlist 不得成为召回边界。发现新单位或新模型时，必须解析其官方域名并补扫整个窗口。搜索摘要和社交消息只能报警，重要事实回到官方页面、论文、模型卡或代码核验。
 
-为每个主题标记：
+## 编辑选择
 
-- `new`：本期全新事件；
-- `new_evidence`：延续上期，但新增生产数据、benchmark 或技术证据；
-- `new_implementation`：延续上期，但出现代码、artifact、API 或 runtime 落地；
-- `continuation`：有新工作，但结论主要延续；
-- `repeat_only`：没有足够增量。
+- headline：进入 3 分钟版和全量版；
+- recommended：值得突出阅读的论文、官方技术文档或技术博客；
+- full_only：只进入全量版；
+- context：解释窗口内事件，必须标明背景日期；
+- risk：RC、preview、已知问题或证据不完整，但对工程判断有价值；
+- archive：只保留在研究候选池。
 
-开头允许用一句话承接上周。重复信号可以保留，但必须写清本周新增内容。
+不要强行提炼长期趋势，也不强制填满条目。只有新的、可命名的技术增量进入 3 分钟版。
 
-## 编辑筛选
+## 唯一出版事实源
 
-使用 `config/editorial-rubric.yml`，将候选分为：
+`outputs/briefing/<date_range>/edition.json` 是唯一出版事实源，使用 `templates/briefing-edition.json` 初始化。研究阶段的 YAML 和 Markdown 不得冒充最终稿。
 
-- `headline`：进入群发版和正文；
-- `trend`：与其他候选合并为趋势；
-- `full_only`：只进入正式版；
-- `watch`：进入观察项；
-- `archive`：只保留在候选池。
+全量版默认按阅读对象组织：新模型、重要仓库、量化与低比特、硬件与互联、System 与架构、Kernel 与编译、技术博客。同一事件只维护一次，可以带多个 topics。每条统一写“要点—证据—边界—用途”。
 
-不要让普通兼容性 PR、缺乏增量的框架变更或证据不足的项目挤占群发版。若 runtime/kernel 在本周形成清晰工作簇，可以单列；否则合并进正文的工程信号。
+3 分钟版是全量版的严格子集，不另写一套结论；标题直接使用日期，不强制空泛 takeaway。
 
-## 双版本生成
+## 生成
 
-### 群发版
+```powershell
+node scripts/lint-briefing.mjs outputs/briefing/<date_range>/edition.json
+node scripts/render-briefing.mjs outputs/briefing/<date_range>/edition.json outputs/briefing/<date_range>/briefing.html
+```
 
-使用 `templates/briefing-card.md`。假设最终可能被制作成无链接图片：
-
-- 写出准确项目/论文/模型名称；
-- 写出机构或项目归属；
-- 写清发生了什么；
-- 最多保留一个最有辨识度的指标；
-- 对 beta、experimental、自报数据等给出短限定；
-- 不依赖“点击链接才能理解”。
-
-### 正式版
-
-使用 `templates/briefing-full.md`，与群发版使用同一选题决策；保留一手链接、技术机制、完整指标和证据边界，并补充 `full_only`、观察项和来源索引。不要把正文写成两个 radar 的简单拼接。
-
-## 人工补录
-
-当用户说“补充这个”“这个漏了”或提供链接/文本时：
-
-1. 按 `templates/manual-candidate.yml` 记录到 `inputs/manual/<date_range>.yml`；
-2. 保留用户原始说明；
-3. 自动补齐事件类型、日期、来源、组织、技术增量和证据状态；
-4. 标记 `origin: manual` 和漏检原因；
-5. 进入统一候选池并按相同标准筛选，不默认强制上头条；
-6. 若已有本期 briefing，更新受影响的选题、趋势、群发版和正式版；
-7. 把漏检原因归类，用于改进通用 collector、taxonomy 或过滤规则，不为单个名字增加专属保留规则。
+`briefing.html` 是 canonical artifact；Markdown 只作为可选导出。内容修改应回写 edition 后重新生成，禁止分别手工维护 HTML、卡片稿和正文稿。
 
 ## 输出目录
 
 ```text
 outputs/briefing/<date_range>/
-├── candidates.yml
-├── coverage.md
-├── verification.md
-├── selection.yml
-├── manifest.yml
-├── briefing-card.md
-└── briefing-full.md
+├── research/
+│   ├── candidates.yml
+│   ├── coverage.md
+│   └── verification.md
+├── edition.json
+├── briefing.html
+├── briefing.md
+└── manifest.yml
 ```
 
-最终自检：群发版与正文事实一致；正文包含所有头条的一手链接；时间在窗口内或明确作为背景；组织归属、发布状态和成熟度不强于证据；closing sweep 与人工补录均已处理；draft 已自动 upsert；finalize 时已从实际最终文件重建 final 快照。
+最终检查：3 分钟版是全量版子集；quick 条目均有一手链接；日期角色正确；成熟度不强于证据；必查 source class 均有覆盖记录；HTML lint 通过且能由 edition 重建。

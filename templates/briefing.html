@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{{DOCUMENT_TITLE}}</title>
+  <style>
+    :root{--ink:#23182b;--muted:#786c7f;--line:#eadfeb;--paper:#fffafd;--panel:#fff;--accent:#b23a8a;--accent2:#7650c8;--soft:#f8eaf4;--soft2:#f1ecfb;--shadow:0 16px 42px rgba(84,38,91,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(145deg,#fffafd 0,#fbf6ff 42%,#fff 100%);color:var(--ink);font:15px/1.72 "DengXian","等线","Microsoft YaHei",sans-serif}
+    a{color:inherit}.progress{position:fixed;z-index:20;inset:0 auto auto 0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+    .layout{display:grid;grid-template-columns:250px minmax(0,920px);gap:44px;max-width:1240px;margin:auto;padding:0 28px}
+    aside{position:sticky;top:0;height:100vh;padding:42px 4px 24px;border-right:1px solid var(--line)}
+    .brand{font-size:12px;font-weight:800;letter-spacing:.16em;color:var(--accent);text-transform:uppercase}.window{margin:8px 0 28px;font-size:13px;color:var(--muted)}
+    nav a{display:block;padding:7px 14px;margin:2px 0;border-left:2px solid transparent;text-decoration:none;color:var(--muted)}nav a:hover,nav a.active{border-color:var(--accent);color:var(--ink);background:linear-gradient(90deg,var(--soft),transparent)}nav a.sub{padding-left:25px;font-size:13px}
+    main{min-width:0;padding:64px 0 100px}header{padding:24px 0 45px;border-bottom:1px solid var(--line)}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)}h1{margin:12px 0 12px;font:700 clamp(34px,5vw,62px)/1.06 Georgia,"Times New Roman",serif;letter-spacing:-.035em}header p{max-width:790px;margin:0;color:#574c5d;font-size:18px;font-weight:600}
+    section{scroll-margin-top:25px;padding-top:52px}h2{margin:0 0 24px;font-size:27px;letter-spacing:-.02em}.section-note{margin:-14px 0 28px;color:var(--muted)}
+    .quick-row{display:grid;grid-template-columns:180px 1fr;gap:28px;padding:24px 0;border-top:1px solid var(--line)}.quick-label{font-size:14px;font-weight:800;color:var(--accent)}.quick-label span{display:block;margin-bottom:5px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.quick-body h3{margin:0 0 7px;font-size:19px}.quick-body p{margin:0;color:#504655}.quick-body .boundary{margin-top:6px;color:var(--muted);font-size:13px}
+    .category{padding-top:58px}.category-head{display:flex;align-items:baseline;gap:13px;margin-bottom:18px}.category-no{font:700 30px/1 Georgia,serif;color:#d5b5cf}.category h3{margin:0;font-size:24px}
+    article{scroll-margin-top:24px;margin:18px 0;padding:26px 28px;background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.badge{padding:3px 8px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.04em}.badge.secondary{background:var(--soft2);color:var(--accent2)}article h4{margin:0 0 18px;font-size:22px}.block{display:grid;grid-template-columns:72px 1fr;gap:14px;margin:11px 0}.block strong{color:var(--accent);font-size:13px}.block p{margin:0}.facts{margin:13px 0 0;padding-left:20px}.facts li{margin:5px 0}.sources{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.sources a{padding:6px 10px;border:1px solid #dfc9db;border-radius:8px;text-decoration:none;color:#71305f;font-size:13px;font-weight:700}.sources a:hover{background:var(--soft)}
+    footer{margin-top:58px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.mobile-nav{display:none}
+    @media(max-width:850px){.layout{display:block;padding:0 20px}aside{position:fixed;z-index:15;inset:0 auto 0 0;width:270px;background:var(--paper);transform:translateX(-102%);transition:.2s;padding-left:22px;box-shadow:var(--shadow)}aside.open{transform:none}.mobile-nav{display:block;position:fixed;z-index:16;right:18px;bottom:18px;width:45px;height:45px;border:0;border-radius:50%;background:var(--accent);color:#fff;font-size:20px;box-shadow:var(--shadow)}main{padding-top:38px}.quick-row{grid-template-columns:1fr;gap:8px}.block{grid-template-columns:1fr;gap:2px}}
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <button class="mobile-nav" id="mobile-nav" aria-label="打开目录">☰</button>
+  <div class="layout">
+    <aside id="sidebar">
+      <div class="brand">LLM Infra Briefing</div>
+      <div class="window">{{WINDOW}}</div>
+      <nav>{{NAVIGATION}}</nav>
+    </aside>
+    <main>
+      <header id="overview">
+        <div class="eyebrow">LLM Infra Briefing</div>
+        <h1>{{DATE_TITLE}}</h1>
+        <p>{{DEK}}</p>
+      </header>
+      <section id="quick">
+        <h2>{{QUICK_TITLE}}</h2>
+        <p class="section-note">只保留本期最值得先知道的技术增量；背景、预告和证据边界直接标明。</p>
+        {{QUICK_CONTENT}}
+      </section>
+      <section id="full">
+        <h2>{{FULL_TITLE}}</h2>
+        {{FULL_CONTENT}}
+      </section>
+      <footer>由结构化 edition 数据生成 · {{GENERATED_AT}}</footer>
+    </main>
+  </div>
+  <script>
+    const progress=document.getElementById('progress');
+    const links=[...document.querySelectorAll('nav a')];
+    addEventListener('scroll',()=>{const h=document.documentElement;progress.style.width=((h.scrollTop/(h.scrollHeight-h.clientHeight))*100)+'%';let current='overview';for(const el of document.querySelectorAll('header[id],section[id],article[id]'))if(el.getBoundingClientRect().top<130)current=el.id;links.forEach(a=>a.classList.toggle('active',a.hash==='#'+current));},{passive:true});
+    const button=document.getElementById('mobile-nav'),sidebar=document.getElementById('sidebar');button.addEventListener('click',()=>sidebar.classList.toggle('open'));links.forEach(a=>a.addEventListener('click',()=>sidebar.classList.remove('open')));
+  </script>
+</body>
+</html>
+

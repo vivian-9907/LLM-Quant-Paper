@@ -1,4 +1,4 @@
-version: 1
+version: 2
 purpose: >
   High-priority model families, agent products, organizations, frameworks and
   keywords to watch across shared sources. This is not a source list; it tells
@@ -23,6 +23,7 @@ search_policy:
   notes:
     - Use watchlist terms to expand weekly search queries, not only as a post-filter.
     - Do not force every watched entity into the final report; report only high-signal changes.
+    - After scanning this list, run open-world organization discovery; the watchlist is never the recall boundary.
 
 maintenance_notes:
   review_frequency: monthly or when a watched ecosystem changes materially
@@ -40,6 +41,27 @@ maintenance_notes:
     - the entity drifts outside quantization, AI infra, serving/runtime, model deployment or agent tooling
 
 model_families:
+  - name: GLM
+    organization: Z.ai / Zhipu AI
+    aliases:
+      - GLM
+      - ChatGLM
+      - Z.ai
+      - Zhipu
+      - 智谱
+    official_pages:
+      - https://z.ai/blog
+      - https://docs.z.ai/
+    watch_for:
+      - new model version
+      - multimodal architecture
+      - sparse or linear attention
+      - Hyper-Connections / mHC
+      - open weights and release timing
+      - API migration
+      - serving on Chinese accelerators
+      - training and rollout infrastructure
+
   - name: GPT / ChatGPT
     organization: OpenAI
     aliases:
@@ -268,6 +290,7 @@ agent_products:
       - benchmark or eval
 
 organizations:
+  - Z.ai / Zhipu AI
   - OpenAI
   - Anthropic
   - Anysphere
@@ -282,6 +305,26 @@ organizations:
   - Hugging Face
   - Xiaomi MiMo
   - Meituan LongCat
+
+priority_technical_blogs:
+  - name: Z.ai research blog
+    url: https://z.ai/blog
+    kind: official
+    closing_sweep: required
+  - name: NVIDIA Technical Blog
+    url: https://developer.nvidia.com/blog/
+    kind: official
+    closing_sweep: required
+  - name: 科学空间
+    url: https://kexue.fm/
+    kind: independent_expert
+    closing_sweep: required
+  - name: vLLM blog
+    url: https://vllm.ai/blog
+    kind: project
+  - name: SGLang / LMSYS blog
+    url: https://lmsys.org/blog/
+    kind: project
 
 hardware_platforms:
   - name: Hardware platform reports
