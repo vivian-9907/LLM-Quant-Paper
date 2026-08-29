@@ -1,0 +1,21 @@
+{
+  "requiredScouts": [
+    "model_architecture_and_artifacts",
+    "quantization_methods_and_training",
+    "kv_memory_and_long_context",
+    "runtime_serving_and_scheduling",
+    "kernels_compilers_and_operators",
+    "hardware_interconnect_and_platforms",
+    "open_world_technical_discovery"
+  ],
+  "requiredSlots": [
+    "model_or_api_release",
+    "paper_or_technical_report",
+    "new_repository_or_first_runnable_artifact",
+    "material_capability_merged_into_existing_project",
+    "runtime_kernel_framework_release_or_work_cluster",
+    "conference_or_coordinated_release_window",
+    "production_deployment_cluster_or_system_benchmark",
+    "follow_up_evidence_implementation_or_counterexample"
+  ]
+}

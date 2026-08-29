@@ -142,6 +142,12 @@ sources:
       - communication overlap
       - optimizer sharding
       - benchmark
+      - agentic kernel generation
+      - autonomous kernel optimization
+      - compiler-agent co-design
+      - operator synthesis
+      - verifier-guided search
+      - multi-agent kernel optimization
       - breaking change
     notes: 跟踪框架、训练系统和 kernel 项目的 release。只保留和模型支持、serving/runtime、训练系统、量化、kernel、性能或兼容性相关的版本变化。
 
@@ -357,6 +363,7 @@ sources:
       - flashinfer-ai/flashinfer
       - triton-lang/triton
       - NVIDIA/cutlass
+      - NVIDIA/cutile-python
       - NVIDIA/cudnn-frontend
       - NVIDIA/TensorRT-LLM
       - sgl-project/sglang
@@ -373,6 +380,8 @@ sources:
         url: https://github.com/triton-lang/triton/releases
       - name: CUTLASS releases
         url: https://github.com/NVIDIA/cutlass/releases
+      - name: cuTile Python releases and changelog
+        url: https://github.com/NVIDIA/cutile-python
       - name: cuDNN Frontend releases
         url: https://github.com/NVIDIA/cudnn-frontend/releases
     candidate_signals:
@@ -409,12 +418,21 @@ sources:
       - HIP
       - gfx950
       - benchmark
+      - agentic kernel generation
+      - autonomous kernel optimization
+      - compiler-agent co-design
+      - operator synthesis
+      - verifier-guided search
+      - multi-agent kernel optimization
     notes: >
       专门补算子、kernel、compiler backend 和硬件后端适配召回。重点保留会改变
       LLM serving/training 性能路径的更新：Ascend CANN/ATB/torch-npu、
       Triton/CUTLASS/FlashInfer/cuDNN Frontend、TensorRT-LLM/SGLang/vLLM
       kernel backend、MoE/MLA/FlashAttention/low-bit GEMM/fusion，以及带
-      latency、throughput、bandwidth、occupancy 或 memory traffic 证据的实现。
+      latency、throughput、bandwidth、occupancy 或 memory traffic 证据的实现。对 AI
+      辅助算子生成还必须检查 correctness gate、数值容差、profiling/benchmark harness、
+      搜索预算、目标硬件与是否进入 upstream/library；superagent 只作查询同义词，不能
+      代替可运行 artifact 和一手实验。
       只有自动 nightly build 或纯 binary packaging 且无 kernel 信息时，放入
       Near Miss 或 watch，不作为高优先级候选。
 

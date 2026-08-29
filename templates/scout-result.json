@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0",
+  "scout": {"id": "model_architecture_and_artifacts", "label": "Model architecture and artifacts"},
+  "window": {"start": "YYYY-MM-DD", "end": "YYYY-MM-DD"},
+  "recallModes": ["known_ecosystem", "open_world"],
+  "coverage": [
+    {"slot": "model_or_api_release", "status": "checked_with_hits"},
+    {"slot": "paper_or_technical_report", "status": "checked_empty"},
+    {"slot": "new_repository_or_first_runnable_artifact", "status": "checked_empty"},
+    {"slot": "material_capability_merged_into_existing_project", "status": "checked_empty"},
+    {"slot": "runtime_kernel_framework_release_or_work_cluster", "status": "checked_empty"},
+    {"slot": "conference_or_coordinated_release_window", "status": "checked_empty"},
+    {"slot": "production_deployment_cluster_or_system_benchmark", "status": "checked_empty"},
+    {"slot": "follow_up_evidence_implementation_or_counterexample", "status": "checked_empty", "note": "Use checked_empty only after both recall modes complete; use access_failed when sources could not be checked."}
+  ],
+  "candidates": [
+    {
+      "id": "organization-project-YYYY-MM-DD",
+      "title": "Exact event title",
+      "organization": "Organization",
+      "eventType": "model_release",
+      "eventDate": "YYYY-MM-DD",
+      "systemLayers": ["models_and_architecture"],
+      "topics": ["model_architecture"],
+      "sources": [{"url": "https://example.com/primary-source", "type": "primary", "title": "Primary source title"}],
+      "evidence": {"technicalDelta": ["Verifiable technical change"], "reportedMetrics": []}
+    }
+  ]
+}

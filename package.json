@@ -5,6 +5,8 @@
   "scripts": {
     "briefing:render": "node scripts/render-briefing.mjs",
     "briefing:lint": "node scripts/lint-briefing.mjs",
+    "briefing:merge": "node scripts/merge-candidates.mjs",
+    "briefing:audit": "node scripts/audit-coverage.mjs",
     "test": "node --test tests/*.test.mjs"
   }
 }

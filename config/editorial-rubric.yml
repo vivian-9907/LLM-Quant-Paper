@@ -29,10 +29,15 @@ dimensions:
     weight: 0.7
     high: Name, event, impact and one caveat fit in one or two sentences without a link.
     low: Value depends on a long methodological explanation.
+  beginner_comprehensibility:
+    weight: 1.0
+    high: A reader outside the project can understand the object, change and consequence without decoding acronyms.
+    low: The prose reads like release notes, a PR inventory or an internal verification log.
   duplication_penalty:
     weight: -1.0
     high: Duplicates another item or last week's conclusion without distinct new evidence.
     low: Adds a clearly different event, layer, workload or maturity step.
+
 
 placement_guidance:
   headline: Strong weekly novelty plus high news or system value and adequate primary evidence.
@@ -42,13 +47,53 @@ placement_guidance:
   risk: Potentially important RC, preview, known issue or incomplete artifact that changes an engineering decision.
   archive: Low increment, weak evidence, out of window or no clear audience value.
 
-quick_policy:
-  target_items: 4_to_7_but_do_not_fill
+publication_policy:
+  layout: unified_editorial_stream
+  section_order:
+    - model_progress
+    - repository_progress
+    - quantization_low_bit
+    - serving_runtime_systems
+    - kernels_compilers_operators
+    - hardware_platforms
+  target_items_per_section: do_not_fill
+  expanded_roles: [headline, recommended, risk]
+  light_roles: [full_only, context]
+  hidden_roles: [archive]
+  model_tracker_requires:
+    - organization
+    - version
+    - architecture
+    - quantization_or_explicit_not_disclosed
+    - official_architecture_figure_or_explicit_unavailable
+    - generation_delta_with_before_after_impact
+  repository_progress:
+    format: thematic_digest
+    theme_count: 2_to_4
+    concrete_signals_per_theme: 2_to_4
+    signal_fields: [repository_or_release, execution_path_change]
+    recommended_primary_links: 3_to_5
+    forbid_release_inventory_as_default: true
+    require_reader_value: true
+  section_spotlights:
+    minimum_linked_items: 2
+    require_reader_value: true
+  non_model_sections:
+    expanded_fields: [event_date, exact_name, point, evidence, boundary, use, primary_sources]
+    light_fields: [event_date, exact_name, one_point, primary_link]
+    prose_rules:
+      - Define unfamiliar acronyms or project-specific terms on first use.
+      - Explain the user-visible or system-visible change before implementation details.
+      - Keep evidence to one or two decision-relevant facts; move exhaustive verification detail to verificationNotes and hidden primary-source links.
+      - Avoid package timestamps, PR counts, device-support inventories and minor API names unless they are the news.
+
   require:
     - exact item or project name
     - organization when known
     - what changed this week
     - one meaningful metric or technical consequence when available
+    - a plain-language explanation of what the system does when the project name is not self-explanatory
+
   caveats:
     - public beta
     - experimental

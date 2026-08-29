@@ -1,0 +1,168 @@
+version: 1
+
+purpose: >
+  Run recall as parallel topic scouts, then merge every result into one event
+  ledger. Source smoke checks are sentinels; they never prove topic coverage.
+
+coverage_statuses:
+  - checked_with_hits
+  - checked_empty
+  - access_failed
+
+event_slots:
+  - model_or_api_release
+  - paper_or_technical_report
+  - new_repository_or_first_runnable_artifact
+  - material_capability_merged_into_existing_project
+  - runtime_kernel_framework_release_or_work_cluster
+  - conference_or_coordinated_release_window
+  - production_deployment_cluster_or_system_benchmark
+  - follow_up_evidence_implementation_or_counterexample
+
+required_recall_modes:
+  - known_ecosystem
+  - open_world
+
+scouts:
+  - id: model_architecture_and_artifacts
+    system_layer: models_and_architecture
+    scope:
+      - model architecture and model cards
+      - attention, MoE and residual-stream changes
+      - model, API and runnable artifact releases
+      - architecture changes with training or inference impact
+
+  - id: quantization_methods_and_training
+    system_layer: training_and_quantization
+    scope:
+      - weight, activation, optimizer and KV quantization
+      - low-bit training, finetuning and calibration
+      - quantized checkpoints and numerical formats
+      - compression methods with runtime or kernel consequences
+
+  - id: kv_memory_and_long_context
+    system_layer: serving_runtime_and_systems
+    scope:
+      - KV cache layout, sharing, paging and compression
+      - prefill, decode and long-context memory behavior
+      - context parallelism and memory hierarchy
+      - long-context serving bottlenecks and artifacts
+
+  - id: runtime_serving_and_scheduling
+    system_layer: serving_runtime_and_systems
+    scope:
+      - serving runtimes and inference engines
+      - batching, scheduling, routing and disaggregation
+      - speculative decoding and production deployment
+      - distributed training and serving systems
+
+  - id: kernels_compilers_and_operators
+    system_layer: kernels_compilers_and_operators
+    scope:
+      - kernel, operator and compiler releases
+      - fusion, layout, memory movement and backend paths
+      - low-bit and MoE GEMM implementations
+      - CUDA, Triton, ROCm, Ascend and accelerator backends
+      - agentic kernel and operator generation, optimization and library generalization
+      - compiler-agent co-design, verifier-guided search and multi-agent or superagent workflows
+    required_subtopic_checks:
+      agentic_kernel_and_operator_engineering:
+        query_families:
+          - agentic kernel generation OR autonomous kernel optimization
+          - LLM-driven operator generation OR operator synthesis
+          - compiler-agent co-design OR verifier-guided kernel search
+          - multi-agent GPU kernel OR kernel superagent
+          - CUDA OR Triton OR CuTe OR Ascend C operator agent
+        retain_when:
+          - a runnable artifact, benchmark or upstream integration is available
+          - correctness verification, anti-reward-hacking or numerical tolerances are specified
+          - the work exposes an IR, schedule representation, cost model, profiler feedback or hardware mapping
+        record_separately:
+          - original artifact date
+          - revision or implementation date that falls inside the window
+          - target hardware and operator coverage
+          - correctness gate, search budget and comparison baseline
+
+  - id: hardware_interconnect_and_platforms
+    system_layer: hardware_interconnect_and_platforms
+    scope:
+      - accelerator and memory-system changes
+      - rack-scale systems, fabrics and interconnects
+      - power, cooling, capacity and deployment status
+      - platform benchmarks with reproducible system detail
+
+  - id: open_world_technical_discovery
+    system_layer: cross_layer
+    scope:
+      - newly important organizations and official domains
+      - independent technical blogs with mechanisms or experiments
+      - new repositories, papers and artifacts outside the watchlist
+      - cross-layer work missed by the six specialist scouts
+
+scout_contract:
+  execution_unit: subagent
+  independent_execution: true
+  output: unified_candidate_ledger
+  prose_allowed: false
+  requirements:
+    - Run both required recall modes for the complete time window.
+    - Record every event slot with exactly one coverage status.
+    - Keep minimal records for filtered candidates and access failures.
+    - Tag candidates with scout ids, topics, system layers and source roles.
+    - Return evidence and unresolved questions; do not make publication decisions.
+
+merge_contract:
+  deduplicate_by_event: true
+  allow_multiple_scouts_per_event: true
+  allow_multiple_topics_per_event: true
+  preserve_all_source_roles: true
+  preserve_recall_provenance: true
+  conflicts_require_review:
+    - event_date
+    - organization
+    - artifact_identity
+    - release_maturity
+
+coverage_matrix:
+  dimensions:
+    rows: scouts
+    columns: event_slots
+  required_for_every_scout: true
+  valid_statuses_from: coverage_statuses
+  completion_rule: >
+    Every scout x event-slot cell must have an explicit status. A smoke check,
+    a hit in another scout, or a source-class check cannot fill the cell.
+
+gap_audit:
+  required_before_closing_sweep: true
+  gaps:
+    - missing coverage cells
+    - access_failed cells without an alternate source attempt
+    - weak or empty high-priority topic layers
+    - candidates recalled by only one weak source
+    - newly important entities without official-domain expansion
+  closing_sweep_rule: >
+    Recheck the normal late-window source classes and target the unresolved
+    topic gaps. Closing sweep results use the same candidate and coverage schema.
+
+publication_layers:
+  - id: models_and_architecture
+    order: 10
+  - id: training_and_quantization
+    order: 20
+  - id: serving_runtime_and_systems
+    order: 30
+  - id: kernels_compilers_and_operators
+    order: 40
+  - id: hardware_interconnect_and_platforms
+    order: 50
+
+publication_rules:
+  - Scout ownership and system layer do not determine the HTML table of contents.
+  - Publish fixed sections in this order: model progress, repository progress, quantization and low bit, serving and systems, kernels and operators, hardware platforms.
+  - One event may enter several sections with a different section point while remaining one canonical event.
+  - The unified edition presents the event only in its primary briefing section.
+  - Repository events remain canonical evidence, but the HTML repository section publishes cross-repository themes and a few reasoned primary-source links instead of an item inventory.
+  - Every published model event must locate an official architecture figure from a primary source or record that none was published, plus a sourced comparison with the organization's previous model generation.
+  - Technical blogs inherit the section of the mechanism they explain.
+  - Cross-layer storylines are optional synthesis after the fixed sections.

@@ -1,5 +1,40 @@
 # Changelog
 
+## v1.4 - Reader-facing evidence and agentic kernel coverage
+
+- Added required scouting and fixed-section spotlights for AI-assisted kernel/operator generation, including multi-agent and superagent workflows.
+- Separated group-facing evidence from canonical `verificationNotes` and added supported hidden source links with `display: false`.
+- Required explicit reader value for repository themes and section spotlights.
+- Added soft lint for verification-log prose and dense unexplained acronyms.
+- Simplified the current edition's repository and serving explanations for cross-project readers.
+
+## v1.3 - Unified publication and substantive repository digest
+
+- Replaced separate quick/full reading layers with one final editorial stream whose density follows `editorialRole`.
+- Required model cards to state the attention mix and disclosed hybrid layer ratio/count.
+- Expanded repository themes with named releases and concrete execution-path or compatibility changes.
+- Kept official architecture figures, generation deltas and fixed top-down section ordering as publication requirements.
+- Added validation and rendering tests for attention patterns and repository theme signals.
+
+## v1.2 - Fixed editorial sections and model release tracker
+
+- Replaced storyline-first summaries with six fixed reader-facing sections.
+- Added a model release timeline with organization, version, architecture, quantization and availability fields.
+- Separated recall topics, system layers and publication sections.
+- Allowed one canonical event to expose different section-specific points without duplicating the full article.
+- Kept cross-domain storylines optional and outside the primary table of contents.
+
+## v1.1 - Parallel topic scouts and top-down editing
+
+- Replaced broad channel scanners as the briefing unit with seven parallel topic scouts.
+- Required known-ecosystem and open-world recall for every scout.
+- Added a scout x event-slot coverage matrix with explicit hit, empty and access-failure states.
+- Made smoke checks sentinels only; they no longer count as topic coverage.
+- Added event-level multi-scout merge provenance and a gap audit before closing sweep.
+- Ordered final HTML from model architecture through training/quantization, runtime/systems, kernels/operators and hardware/interconnect.
+- Assigned repositories and technical blogs to the system layer they implement or explain.
+
+
 ## v1.0 - HTML-first unified briefing
 
 - Reframed quantization and AI Infra as recall scanners that merge into one event pool.

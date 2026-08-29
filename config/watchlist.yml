@@ -107,6 +107,8 @@ model_families:
       - Qwen
       - Tongyi
     watch_for:
+      - linear attention lineage and GDN-to-attention layer ratio
+      - sparse attention and indexer changes
       - open weights
       - coding / agent model
       - multimodal model
@@ -327,6 +329,24 @@ priority_technical_blogs:
     kind: project
 
 technical_research_focus:
+  - name: Distributed KV cache control planes
+    organization: ecosystem
+    priority: high
+    mandatory_smoke_check: true
+    official_pages:
+      - https://github.com/LMCache/LMCache
+      - https://github.com/ai-dynamo/dynamo
+      - https://github.com/ai-dynamo/nixl
+    watch_for:
+      - fleet-wide cache directory and KV-aware routing
+      - coordinator durability, recovery and tenant isolation
+      - prefix and non-prefix reuse across instances
+      - lazy offload, prefetch and cache movement
+      - NIXL, GDS, RDMA and remote storage paths
+      - hybrid attention, DCP and KV-layout compatibility
+      - silent corruption, stale identity and cross-request contamination
+      - accelerator plugins and engine-driven transfer
+
   - name: NVIDIA kernel compiler research
     organization: NVIDIA
     priority: high
@@ -344,6 +364,7 @@ technical_research_focus:
       - compiler diagnostics
       - CUDA/PTX/SASS generation
       - CUTLASS/CuTe integration
+      - cuTile / Tile IR and its boundary with CuTe DSL
       - Triton or MLIR backend
       - upstream kernel or library integration
 
@@ -375,6 +396,9 @@ frameworks:
   - Transformers
   - FlashInfer
   - Triton
+  - NVIDIA Dynamo
+  - LMCache
+  - cuTile
 
 keep_release_if_any:
   - agent product release or changelog

@@ -168,6 +168,20 @@ repositories:
       - operator-fusion
       - hardware-portability
 
+  - name: cuTile Python
+    repo: NVIDIA/cutile-python
+    channels:
+      - ai-infra
+    source_modes:
+      - github_releases
+      - github_activity
+    tags:
+      - gpu-dsl
+      - kernel-compiler
+      - tile-ir
+      - low-precision
+      - hardware-portability
+
   - name: cuDNN Frontend
     repo: NVIDIA/cudnn-frontend
     channels:
@@ -219,3 +233,31 @@ repositories:
       - memory-system
       - disaggregated-serving
       - kv-cache
+
+  - name: Dynamo
+    repo: ai-dynamo/dynamo
+    channels:
+      - ai-infra
+    source_modes:
+      - github_releases
+      - github_activity
+    tags:
+      - distributed-inference
+      - kv-aware-routing
+      - disaggregated-serving
+      - autoscaling
+      - simulation
+
+  - name: LMCache
+    repo: LMCache/LMCache
+    channels:
+      - ai-infra
+    source_modes:
+      - github_releases
+      - github_activity
+    tags:
+      - kv-cache
+      - cache-offload
+      - disaggregated-serving
+      - prefix-caching
+      - memory-system

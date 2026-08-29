@@ -18,8 +18,11 @@
   },
   "presentation": {
     "theme": "pink-purple",
-    "quickTitle": "3 分钟直觉版",
-    "fullTitle": "全量版"
+    "sectionTitle": "本期进展",
+    "easterEgg": {
+      "image": "",
+      "alt": ""
+    }
   },
   "dek": "{{one factual sentence naming the most important releases in this window}}",
   "items": [
@@ -31,10 +34,38 @@
       "windowRole": "in_window",
       "maturity": "released",
       "category": "models",
-      "quick": true,
+      "systemLayer": "models_and_architecture",
+      "briefingSections": [
+        "model_progress"
+      ],
+      "primaryBriefingSection": "model_progress",
+      "modelProfile": {
+        "organization": "{{organization}}",
+        "version": "{{model version}}",
+        "architecture": "{{active/total parameters, attention, MoE or other architecture delta}}",
+        "attentionPattern": "{{attention types plus layer ratio/count, or explicit not disclosed}}",
+        "quantization": "{{available low-bit format, runtime path, not disclosed or not applicable}}",
+        "availability": "{{weights, API, preview, release or artifact status}}",
+        "architectureFigure": {
+          "url": "https://example.com/official-architecture.png",
+          "alt": "{{accessible description}}",
+          "caption": "{{what the official figure shows}}",
+          "sourceUrl": "https://example.com/official-blog-or-paper",
+          "sourceLabel": "{{official blog, paper or model card}}"
+        },
+        "generationDelta": [
+          {"label": "{{dimension}}", "before": "{{previous generation}}", "after": "{{current generation}}", "impact": "{{engineering consequence}}"}
+        ]
+      },
+      "sectionPoints": {
+        "model_progress": "{{one concise model-release point}}"
+      },
       "editorialRole": "headline",
       "point": "{{what changed}}",
-      "evidence": "{{mechanism, metric or implementation evidence}}",
+      "evidence": "{{one or two reader-facing facts}}",
+      "verificationNotes": [
+        "{{canonical audit detail omitted from group-facing HTML}}"
+      ],
       "boundary": "{{vendor-reported, author-reported, preview or other boundary}}",
       "use": "{{why a technical reader should care}}",
       "facts": [],
@@ -44,9 +75,44 @@
           "label": "{{primary source label}}",
           "url": "https://example.com",
           "role": "primary",
-          "publishedAt": "{{YYYY-MM-DD}}"
+          "publishedAt": "{{YYYY-MM-DD}}",
+          "display": true
         }
       ]
     }
-  ]
+  ],
+  "repositoryDigest": {
+    "summary": "{{two or three cross-repository changes worth remembering}}",
+    "themes": [
+      {"title": "{{theme}}", "point": "{{what multiple repositories collectively changed}}", "readerValue": "{{which reader decision or understanding this changes}}", "signals": [
+        {"name": "{{repository or release}}", "change": "{{execution path, compatibility boundary or engineering decision changed}}"},
+        {"name": "{{repository or release}}", "change": "{{execution path, compatibility boundary or engineering decision changed}}"}
+      ]}
+    ],
+    "recommendedLinks": [
+      {"label": "{{official release or document}}", "url": "https://example.com", "why": "{{why this is worth the reader's time}}"}
+    ]
+  },
+  "sectionSummaries": {
+    "model_progress": "{{what changed across model releases in this window}}",
+    "repository_progress": "{{important repository changes}}",
+    "quantization_low_bit": "{{low-bit method and implementation changes}}",
+    "serving_runtime_systems": "{{serving and system changes}}",
+    "kernels_compilers_operators": "{{operator and compiler changes}}",
+    "hardware_platforms": "{{hardware and platform changes}}"
+  },
+  "sectionSpotlights": {
+    "kernels_compilers_operators": [
+      {
+        "id": "{{stable-spotlight-id}}",
+        "title": "{{direction worth watching}}",
+        "thesis": "{{shared change supported by the linked items}}",
+        "readerValue": "{{why this direction deserves space in the group-facing edition}}",
+        "use": "{{engineering decision or evaluation method}}",
+        "boundary": "{{time, evidence and maturity boundary}}",
+        "itemIds": ["{{canonical-item-id-1}}", "{{canonical-item-id-2}}"]
+      }
+    ]
+  },
+  "storylines": []
 }

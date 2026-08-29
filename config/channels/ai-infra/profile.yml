@@ -75,6 +75,11 @@ required_smoke_checks:
       - MLA kernel
       - FlashAttention
       - fused operator
+      - agentic kernel generation
+      - autonomous kernel optimization
+      - compiler-agent co-design
+      - LLM operator generation
+      - kernel superagent
     official_source_terms:
       - site:gitee.com/ascend CANN release operator
       - site:gitee.com/ascend torch_npu release
@@ -85,6 +90,9 @@ required_smoke_checks:
       - site:github.com/NVIDIA/TensorRT-LLM releases kernel
       - site:github.com/sgl-project/sglang releases kernel
       - site:github.com/vllm-project/vllm releases kernel
+      - site:arxiv.org agentic kernel generation compiler verifier
+      - site:openreview.net kernel agent hardware-aware unit tests
+      - site:github.com kernel agent operator generation benchmark
     expand_operator_kernel_reports_if_any:
       - CANN / ATB / torch-npu release note
       - Ascend NPU kernel or operator support
@@ -97,6 +105,7 @@ required_smoke_checks:
       - TMA / WGMMA / TMEM / blockscale / swizzle / layout optimization
       - ROCm / HIP / gfx950 / MI300 / MI350 backend path
       - benchmark with latency, throughput, bandwidth, occupancy or memory traffic
+      - agent-generated kernel with correctness gate, profiler loop, search budget or upstream integration
 
 strong_signals:
   - release notes, code changes, benchmark, paper, model card or artifact

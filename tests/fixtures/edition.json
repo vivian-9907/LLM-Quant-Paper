@@ -1,7 +1,10 @@
 {
   "schemaVersion": 1,
   "edition": "Recall regression · 2026-08-26",
-  "window": {"start": "2026-08-15", "end": "2026-08-27"},
+  "window": {
+    "start": "2026-08-15",
+    "end": "2026-08-27"
+  },
   "coverage": {
     "closingSweepAt": "2026-08-27T09:00:00+08:00",
     "sourceClasses": {
@@ -13,7 +16,10 @@
       "emerging_official_domains": "checked_with_hits"
     }
   },
-  "presentation": {"theme": "pink-purple", "quickTitle": "3 分钟直觉版", "fullTitle": "全量版"},
+  "presentation": {
+    "theme": "pink-purple",
+    "sectionTitle": "本期进展"
+  },
   "dek": "GLM-5.3-Flash 于 8 月 26 日发布，架构、低成本 serving 与国产芯片部署信号应在 closing sweep 中同时被召回。",
   "items": [
     {
@@ -30,11 +36,45 @@
       "evidence": "官方同时披露 mHC、30T-token 多模态预训练语料，以及全部匿名测试流量由国产 AI 芯片承载。",
       "boundary": "性能、价格与芯片承载结论来自厂商自报，仍需独立 runtime 数据核验。",
       "use": "同时影响长上下文 serving、低成本模型选择、国产芯片适配与新架构跟踪。",
-      "facts": ["官方标价口径为相对 GLM-5.2 约十分之一成本", "匿名测试名为 ox-alpha"],
-      "topics": ["model-release", "architecture", "hardware", "serving"],
+      "facts": [
+        "官方标价口径为相对 GLM-5.2 约十分之一成本",
+        "匿名测试名为 ox-alpha"
+      ],
+      "topics": [
+        "model-release",
+        "architecture",
+        "hardware",
+        "serving"
+      ],
       "sources": [
-        {"label": "Z.ai 官方技术博客", "url": "https://z.ai/blog/glm-5.3-flash", "role": "primary", "publishedAt": "2026-08-26"}
-      ]
+        {
+          "label": "Z.ai 官方技术博客",
+          "url": "https://z.ai/blog/glm-5.3-flash",
+          "role": "primary",
+          "publishedAt": "2026-08-26"
+        }
+      ],
+      "systemLayer": "models_and_architecture",
+      "briefingSections": ["model_progress"],
+      "primaryBriefingSection": "model_progress",
+      "modelProfile": {
+        "organization": "Z.ai",
+        "version": "GLM-5.3-Flash",
+        "architecture": "320B total / 18B active · hybrid attention",
+        "attentionPattern": "3:1 linear:sparse · 34 KDA + 11 DSA layers",
+        "quantization": "not disclosed",
+        "availability": "released",
+        "architectureFigure": {
+          "url": "https://z.ai/official-architecture.png",
+          "alt": "GLM-5.3-Flash architecture",
+          "caption": "Official hybrid-attention architecture",
+          "sourceUrl": "https://z.ai/blog/glm-5.3-flash",
+          "sourceLabel": "Z.ai official blog"
+        },
+        "generationDelta": [
+          {"label": "Active compute", "before": "32B active", "after": "18B active", "impact": "lower serving cost"}
+        ]
+      }
     }
   ]
 }

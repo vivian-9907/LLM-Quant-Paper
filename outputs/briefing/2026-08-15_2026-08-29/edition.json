@@ -1,0 +1,1314 @@
+{
+  "schemaVersion": 1,
+  "edition": "2026-08-15_2026-08-29",
+  "window": {
+    "start": "2026-08-15",
+    "end": "2026-08-29"
+  },
+  "dek": "GLM-5.3-Flash、Qwen3.8-Flash-Next 与 Hy4-preview 同期改写注意力、残差和 MoE 路径，运行时与低比特栈开始追赶新架构。",
+  "presentation": {
+    "sectionTitle": "本期进展",
+    "easterEgg": {
+      "image": "./assets/niu-lai-original.jpg",
+      "alt": "电影《牛来》原版动画剧照"
+    }
+  },
+  "coverage": {
+    "closingSweepAt": "2026-08-29T18:00:00+08:00",
+    "sourceClasses": {
+      "official_model_blogs": "checked_with_hits",
+      "nvidia_technical": "checked_with_hits",
+      "repository_releases": "checked_with_hits",
+      "hardware_platforms": "checked_with_hits",
+      "independent_blogs": "access_failed",
+      "emerging_official_domains": "checked_empty"
+    }
+  },
+  "items": [
+    {
+      "id": "glm-5-3-flash",
+      "category": "models",
+      "title": "GLM-5.3-Flash 把原生多模态与混合注意力带到 18B 激活规模",
+      "eventDate": "2026-08-26",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "320B 总参数、18B 激活参数，首次在 GLM-5 系列中引入原生多模态与稀疏/线性注意力混合架构。",
+      "evidence": "官方同时披露 mHC、30T-token 多模态预训练语料，以及全部匿名测试流量由国产 AI 芯片承载。",
+      "boundary": "注意力计算量、KV 占用和端到端吞吐提升均为厂商自测，跨硬件与跨运行时可比性仍需独立验证。",
+      "use": "适合评估高并发多模态服务中的激活参数、KV 容量和国产芯片适配成本。",
+      "sources": [
+        {
+          "url": "https://z.ai/blog/glm-5.3-flash",
+          "publisher": "Z.ai",
+          "role": "primary",
+          "label": "GLM-5.3-Flash: A Native Multimodal Foundation Model"
+        },
+        {
+          "url": "https://huggingface.co/zai-org/GLM-5.3-Flash/blob/main/config.json",
+          "publisher": "Z.ai",
+          "role": "primary",
+          "label": "GLM-5.3-Flash official config.json"
+        }
+      ],
+      "systemLayer": "models_and_architecture",
+      "briefingSections": [
+        "model_progress"
+      ],
+      "primaryBriefingSection": "model_progress",
+      "modelProfile": {
+        "organization": "Z.ai",
+        "version": "GLM-5.3-Flash",
+        "architecture": "320B 总参数 / 18B 激活 · 原生多模态 · 稀疏与线性注意力混合",
+        "attentionPattern": "约 3:1 Linear:Sparse · 45 层中 34 层 KDA linear attention、11 层 DSA",
+        "quantization": "公开权重未标注低比特版；官方国产芯片服务采用 W8A8 与混合 INT8/FP8/BF16 cache",
+        "availability": "正式发布；官方服务流量已部署",
+        "architectureFigure": {
+          "url": "https://z-cdn-media.chatglm.cn/prompts-rich-media-resources/5.3-flash-blog/HyqVZw2wze.png",
+          "alt": "GLM-5.3-Flash official architecture and efficiency comparison",
+          "caption": "Hybrid Linear + Sparse Attention、IndexPool 与计算／KV 对比",
+          "sourceUrl": "https://z.ai/blog/glm-5.3-flash",
+          "sourceLabel": "Z.ai 官方博客"
+        },
+        "generationDelta": [
+          {
+            "label": "计算规模",
+            "before": "GLM-4.5：355B / 32B active / 92 layers",
+            "after": "GLM-5.3-Flash：320B / 18B active / 45 layers",
+            "impact": "以更少激活参数和层数压低单 token 计算。"
+          },
+          {
+            "label": "注意力",
+            "before": "GLM-5.2：DSA + IndexShare",
+            "after": "34 KDA + 11 DSA，约 3:1，并加入 IndexPool",
+            "impact": "GLM 系列首次引入 linear+sparse hybrid；官方称相对 GLM-5.3 再降约 3× attention 计算与 4.4× KV。"
+          },
+          {
+            "label": "模态",
+            "before": "上一代 GLM-5 主线以文本为主",
+            "after": "GLM-5 系列首个原生多模态模型",
+            "impact": "多模态不再依赖外围拼接。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "qwen3-8-flash-next",
+      "category": "models",
+      "title": "Qwen3.8-Flash-Next 以 6B 激活参数预演 Qwen4 架构",
+      "eventDate": "2026-08-26",
+      "windowRole": "in_window",
+      "maturity": "preview",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "125B 总参数、6B 激活参数的开放权重预览模型，延续 Qwen3-Next 首次引入的 3:1 GDN hybrid，并把全局 attention 升级为 QSA。",
+      "evidence": "官方模型卡给出原生 262,144 token 上下文、可扩展到 1M，并提供 128-block FP8 权重及 Transformers、vLLM、SGLang 运行路径。",
+      "boundary": "该版本被明确定位为 Qwen4 的实验性架构预览；性能表格来自项目方，生产稳定性尚未建立。",
+      "use": "可用于提前验证长上下文、混合线性注意力和细粒度专家路由对现有服务栈的影响。",
+      "sources": [
+        {
+          "url": "https://qwen.ai/blog?id=qwen3.8-flash-next",
+          "publisher": "Qwen",
+          "role": "primary",
+          "label": "Qwen3.8-Flash-Next"
+        },
+        {
+          "url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next-FP8",
+          "publisher": "Qwen",
+          "role": "primary",
+          "label": "Qwen3.8-Flash-Next-FP8"
+        }
+      ],
+      "systemLayer": "models_and_architecture",
+      "briefingSections": [
+        "model_progress"
+      ],
+      "primaryBriefingSection": "model_progress",
+      "modelProfile": {
+        "organization": "Qwen",
+        "version": "Qwen3.8-Flash-Next",
+        "architecture": "125B 总参数 / 6B 激活 · Gated DeltaNet + 稀疏注意力 · 512-expert MoE",
+        "attentionPattern": "3:1 GDN:QSA · 每 4 层中 3 层 GDN、1 层全局 QSA",
+        "quantization": "提供 128-block FP8 权重",
+        "availability": "开放权重架构预览",
+        "architectureFigure": {
+          "url": "https://qianwen-res.oss-accelerate.aliyuncs.com/Qwen3.8-Flash-Next/architecture.png",
+          "alt": "Qwen3.8-Flash-Next official architecture",
+          "caption": "N-gram Embedding、GDN + QSA、Gated Residual、Ultra-sparse MoE 与 MTP",
+          "sourceUrl": "https://qwen.ai/blog?id=qwen3.8-flash-next",
+          "sourceLabel": "Qwen 官方博客"
+        },
+        "generationDelta": [
+          {
+            "label": "注意力沿革",
+            "before": "Qwen3-Next 首次引入 3:1 GDN + 全局 Attention",
+            "after": "Qwen3.8 保留 3:1，并把全局层升级为 QSA",
+            "impact": "不是首次采用 linear attention；本代增量是 QSA micro-block indexer。"
+          },
+          {
+            "label": "残差路径",
+            "before": "上一代常规残差主线",
+            "after": "4-branch Gated Residual",
+            "impact": "扩大并动态控制信息旁路容量。"
+          },
+          {
+            "label": "优化器",
+            "before": "上一代训练 recipe 未采用这一组合",
+            "after": "矩阵权重用 Muon，其余用 AdamW",
+            "impact": "为超稀疏模型重新拟合 scaling law 与训练稳定性。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "hy4-preview",
+      "category": "models",
+      "title": "Hy4-preview 用 Gated DSA、IndexCache 与 iHC 扩到 770B / 49B 激活",
+      "organization": "Tencent Hunyuan",
+      "eventDate": "2026-08-28",
+      "windowRole": "in_window",
+      "maturity": "preview",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "770B 总参数、49B 激活的开放权重预览模型，以 Gated DeepSeek Sparse Attention、跨层 IndexCache、iHC 四路残差和原生 MTP 支持 1M 上下文。",
+      "evidence": "官方配置给出 78 层：首层 dense FFN、其余 77 层 MoE；每层 256 个 routed experts 加 1 个 shared expert，top-8 routed；MTP 层为 10B 总参数、0.7B 激活。",
+      "boundary": "该版本仍是 preview；性能和效率数字来自腾讯报告，IndexCache、iHC 与 1M 上下文在不同 runtime 上仍需独立验证。",
+      "use": "适合评估 DSA index 跨层复用、多残差流与大规模 MoE 对 KV、专家并行和推测解码栈的联合影响。",
+      "sources": [
+        {
+          "url": "https://github.com/Tencent-Hunyuan/Hy4-preview",
+          "publisher": "Tencent Hunyuan",
+          "role": "primary",
+          "label": "Hy4-preview official repository"
+        },
+        {
+          "url": "https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/",
+          "publisher": "Tencent",
+          "role": "primary",
+          "label": "Tencent releases and open-sources Hy4-preview"
+        },
+        {
+          "url": "https://huggingface.co/tencent/Hy4-preview-FP8",
+          "publisher": "Tencent",
+          "role": "primary",
+          "label": "Hy4-preview-FP8"
+        }
+      ],
+      "systemLayer": "models_and_architecture",
+      "briefingSections": [
+        "model_progress",
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "model_progress",
+      "sectionPoints": {
+        "model_progress": "Hy4-preview 以 Gated DSA + IndexCache、iHC 四路残差和原生 MTP 形成腾讯新一代 770B / 49B 架构。",
+        "quantization_low_bit": "腾讯同步提供 BF16 与官方 FP8 checkpoint；低比特收益仍需在目标 runtime 与硬件上复测。"
+      },
+      "modelProfile": {
+        "organization": "Tencent Hunyuan",
+        "version": "Hy4-preview",
+        "architecture": "770B 总参数 / 49B 激活 · Gated DSA + IndexCache · 256+1 experts · iHC",
+        "attentionPattern": "Gated DSA + IndexCache · 官方未披露 linear/sparse 混合层比例",
+        "quantization": "官方提供 BF16 与 FP8 checkpoint",
+        "availability": "开放权重 preview；提供 vLLM / SGLang 路径",
+        "architectureFigureUnavailable": "腾讯当前一手材料未发布 Hy4-preview 的完整主架构图；此处只保留官方模型规格与代际变化，不再自行绘图。",
+        "generationDelta": [
+          {
+            "label": "规模",
+            "before": "Hy3-preview：295B / 21B active",
+            "after": "Hy4-preview：770B / 49B active",
+            "impact": "总容量和每 token 激活计算同时上移。"
+          },
+          {
+            "label": "注意力",
+            "before": "Hy3-preview：GQA full attention",
+            "after": "Gated DSA + IndexCache",
+            "impact": "把 1M 上下文的全局注意力改成稀疏选择，并跨层摊薄 indexer 成本。"
+          },
+          {
+            "label": "残差",
+            "before": "Hy3-preview：常规 residual stream",
+            "after": "iHC：4 residual streams",
+            "impact": "在可控开销下增加跨层信息通道。"
+          },
+          {
+            "label": "MoE / MTP",
+            "before": "192 experts top-8；3.8B MTP",
+            "after": "256 routed + 1 shared top-8；10B/0.7B active MTP",
+            "impact": "专家容量与原生多 token 预测同步扩展。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vllm-v0-28-0",
+      "category": "repositories",
+      "title": "vLLM 0.28.0 集中补齐 Kimi K3、分层 KV 与 E/P/D 执行路径",
+      "eventDate": "2026-08-26",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "版本把 Kimi K3 的 DCP、融合 KDA、SiTU 与专家并行优化，以及分层 KV 磁盘卸载纳入主线。",
+      "evidence": "项目记录 584 次提交和 270 位贡献者；组合 all-gather 内核给出 1.5–3 倍内核级提升，共享专家分片可节省约 17 GiB/GPU。",
+      "boundary": "数字来自特定模型与硬件的项目基准；bitsandbytes 插件化及 KV-scale 参数移除带来升级兼容风险。",
+      "use": "升级前应重点回归量化插件、KV offload、DCP/spec decode 以及旧启动参数。",
+      "sources": [
+        {
+          "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0",
+          "publisher": "vLLM",
+          "role": "primary",
+          "label": "vLLM v0.28.0 release"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "repository_progress",
+        "serving_runtime_systems",
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "repository_progress",
+      "sectionPoints": {
+        "repository_progress": "vLLM 0.28.0 把 Kimi K3、分层 KV 卸载与 E/P/D 路径集中纳入主线，升级时要同步处理兼容性变化。",
+        "serving_runtime_systems": "分层 KV 卸载、DCP 和专家并行成为本次版本的核心系统增量。",
+        "quantization_low_bit": "bitsandbytes 改为插件化，量化部署升级需要单独回归插件与旧参数。"
+      }
+    },
+    {
+      "id": "sglang-v0-5-18",
+      "category": "repositories",
+      "title": "SGLang 0.5.18 推进启动重叠、TP LMHead 与 AMD 低精度路径",
+      "eventDate": "2026-08-22",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "editorialRole": "full_only",
+      "quick": true,
+      "point": "版本覆盖 checkpoint staging、张量并行 LMHead、MNNVL all-reduce、投机解码和 AMD NVFP4/MXFP4 路径。",
+      "evidence": "项目报告 Qwen3-32B 启动比串行预取再快 8.6–11.7%；DeepSeek V4 Pro 的 TP LMHead 延迟从 320 微秒降到 169 微秒。",
+      "boundary": "710 个 PR 涉及面很广，公布提升来自不同平台和工作负载，不能直接相加为整体收益。",
+      "use": "适合 AMD/NVIDIA 混合资源池分别建立升级基线，并单独测量启动、首 token 与稳态 decode。",
+      "sources": [
+        {
+          "url": "https://github.com/sgl-project/sglang/releases/tag/v0.5.18",
+          "publisher": "SGLang",
+          "role": "primary",
+          "label": "SGLang v0.5.18 release"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "repository_progress",
+        "serving_runtime_systems",
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "repository_progress",
+      "sectionPoints": {
+        "repository_progress": "SGLang 0.5.18 覆盖启动、LMHead、投机解码和 AMD 低精度，属于需要分平台建立基线的大版本。",
+        "serving_runtime_systems": "checkpoint staging 与 TP LMHead 直接改善启动和首 token 路径。",
+        "quantization_low_bit": "AMD 后端新增 NVFP4/MXFP4 路径，低精度支持开始跨 NVIDIA 与 AMD 扩展。"
+      }
+    },
+    {
+      "id": "quantization-aware-healing",
+      "category": "quantization",
+      "title": "Quantization-Aware Healing 将模型收缩与 MXFP4 恢复合并为一条配方",
+      "eventDate": "2026-08-21",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "recommended",
+      "quick": true,
+      "point": "论文从 GPT-OSS-120B 构造 60B 学生模型，再针对 MXFP4 量化损伤进行轻量恢复训练。",
+      "evidence": "作者报告 Hypernova-60B-MXFP4 在 9 项评测中的 7 项追平或超过 BF16 教师，权重内存约降至四分之一。",
+      "boundary": "这是作者实验结果，任务集合有限；与完整 QAT 的成本比较不等于所有模型家族都可复现。",
+      "use": "对受显存约束的部署，可把结构裁剪与量化恢复作为联合设计变量，而不是末端独立压缩步骤。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.20953",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "Quantization-Aware Healing: A Practical Recipe for Training Efficient Open-Weight LLMs"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "transforms-for-llm-quantization",
+      "category": "quantization",
+      "title": "Transforms for LLM Quantization 把旋转、缩放与 FP4 格式放进同一设计空间",
+      "eventDate": "2026-08-25",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "recommended",
+      "point": "这篇综述指出，量化前变换不能脱离实际编码格式讨论：共享 scale 的整数/块格式偏好组内展平，而 FP4、MXFP4、NVFP4 对旋转与能量分布的收益并不相同。",
+      "evidence": "作者梳理截至 2026 年 6 月的 200 篇工作，将 43 种 transform 方法按结构、数据依赖、搜索方式和运行时成本分类，并分析它们与 GPTQ rounding 的组合。",
+      "boundary": "这是单作者综述与理论统一框架，不是同一硬件上的端到端排行榜；方法覆盖截止到 2026 年 6 月。",
+      "use": "选择 Hadamard、旋转、缩放或非正交变换时，应先绑定目标格式、group size 和 kernel，而不是把 transform 当成通用精度补丁。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.25188",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "Transforms for LLM Quantization: The Great Inversion and Format Co-Design"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "activation-outliers-mllm-quantization",
+      "category": "quantization",
+      "title": "Activation Outliers Matter 将多模态 4-bit 损伤定位到 activation quantization",
+      "eventDate": "2026-08-27",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "recommended",
+      "point": "论文比较 MXFP8、MXFP4 与 HiF4 后认为，多模态模型激进 4-bit 量化的主要精度损伤来自 activation，而不是 weight，并提出 residual fallback 路径做轻量恢复。",
+      "evidence": "作者在 Wan2.2 与 Qwen3-VL 的生成和推理任务上报告：MXFP8 接近无损，RFQ 能回收 MXFP4/HiF4 相对 BF16 的一部分性能差距，且无需修改主架构。",
+      "boundary": "结论来自两类代表性 MLLM 和作者实验；摘要没有给出统一端到端吞吐、显存或目标硬件上的完整成本。",
+      "use": "多模态 FP4 部署应把 activation outlier 单独建模和验收，不能只根据权重量化误差判断可用性。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.26581",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "Activation Outliers Matter: Robust Recovery for Quantized Multimodal LLMs"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "sandwichquant",
+      "category": "quantization",
+      "title": "SandwichQuant 用量化前后两阶段 normalization-affine 参数修复误差",
+      "eventDate": "2026-08-25",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "full_only",
+      "point": "SandwichQuant 把低维 normalization-affine 子空间作为高性价比修复方向，在量化前提升鲁棒性、量化图固定后补偿残余误差。",
+      "evidence": "论文在视觉模型和 LLM 的多种低比特设置上报告一致改善，但摘要未给出统一部署成本。",
+      "boundary": "目前主要是作者实验与机制结论，是否优于现有 calibration/QAT 配方需要同预算复测。",
+      "use": "适合作为低成本 post-quantization repair 候选，而不是默认替换成熟 PTQ 流程。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.24173",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "SandwichQuant"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "moexbench-composable-compression",
+      "category": "quantization",
+      "title": "MoEXBench 说明 MoE 剪枝、权重量化与 KV 压缩不能按单项结果相加",
+      "eventDate": "2026-08-22",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "full_only",
+      "point": "MoEXBench 覆盖 10 个 30B–235B MoE、20%–50% expert pruning、1–16 bit 权重量化和多档 KV 精度，发现组合压缩的质量与运行时收益无法由单项实验预测。",
+      "evidence": "作者发布八模块评测、压缩 artifact 与脚本，并指出 expert pruning 是主要退化源，平均分会掩盖 workload/architecture-specific failure。",
+      "boundary": "仍是作者构建的 benchmark；commodity hardware 的结论需要按实际 runtime 和路由负载复核。",
+      "use": "规划 MoE 压缩时应把剪枝、权重和 KV 作为组合矩阵验收，而不是分别选最优配置后直接叠加。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.21693",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "MoEXBench"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "fluxbin",
+      "category": "quantization",
+      "title": "FluxBin 用 LUT 与 CUDA kernel 协同兑现超低比特推理",
+      "eventDate": "2026-08-16",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "full_only",
+      "point": "FluxBin 将 binary decomposition、显著性混合基与 LUT/scale fusion kernel 联合设计，目标是避免二值量化仍依赖浮点反量化。",
+      "evidence": "作者报告最高 5.92× 加速、10.19× 能耗节省，并称 70B 模型可在单张 A100 上运行；论文提供代码链接。",
+      "boundary": "数字来自作者测试，强依赖专用 CUDA kernel、模型形状和对比基线。",
+      "use": "它提醒超低比特是否有价值，最终取决于编码方式能否映射到真实执行 kernel。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.15602",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "FluxBin"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "schurquant",
+      "category": "quantization",
+      "title": "SchurQuant 用 groupwise 离散优化改善 2-bit PTQ",
+      "eventDate": "2026-08-16",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "full_only",
+      "point": "SchurQuant 通过 Schur-complement curvature、scale/zero-point 重拟合和整数 code coordinate descent，改进无需反向传播的 2–3 bit weight-only PTQ。",
+      "evidence": "作者报告在 Qwen3-4B 2-bit 上相对固定 GPTQ 目标提升 11.88 个零样本百分点，并在 8 个 Llama/Qwen 模型上超过所测最强 PTQ baseline。",
+      "boundary": "提升是作者评测；论文也指出更低 reconstruction error 在较高 bit-width 下不一定转化为端任务收益。",
+      "use": "适合跟踪 2-bit PTQ 的优化上限，但仍需关注实际 kernel 和解码速度是否匹配。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.15567",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "SchurQuant"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "flashquant-outlier-fusion",
+      "category": "quantization",
+      "title": "FlashQuant 把 W4A16 dense GEMM 与 outlier SpMM 融成一个 kernel",
+      "eventDate": "2026-08-16",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "full_only",
+      "point": "FlashQuant 针对 outlier-aware W4A16 decode，把低比特 dense GEMM 与高精度 sparse SpMM 合并，复用 activation 和 output tile，减少 memory-bound decode 的冗余访存。",
+      "evidence": "作者报告相对 cuBLAS BF16 为 2.74–4.18×，相对最强未融合 outlier-aware baseline 最高 1.53×。",
+      "boundary": "属于作者 kernel benchmark；收益取决于 outlier 稀疏度、tile 编码和具体 GPU。",
+      "use": "对 W4A16 部署，outlier 路径是否融合可能比单纯压低权重 bit-width 更影响实际 decode 性能。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.15531",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "FlashQuant"
+        }
+      ],
+      "systemLayer": "training_and_quantization",
+      "briefingSections": [
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "quantization_low_bit"
+    },
+    {
+      "id": "openai-jalapeno-first-results",
+      "category": "hardware",
+      "title": "OpenAI 公布首款自研推理芯片 Jalapeño 的首批结果",
+      "eventDate": "2026-08-25",
+      "windowRole": "in_window",
+      "maturity": "preview",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "Jalapeño 是 OpenAI 首款自研推理芯片，围绕芯片、内存、网络、软件和机架进行联合设计。",
+      "evidence": "在 GPT-OSS 120B、DeepSeek R1 670B 和 Kimi K2.5 1T 上，官方报告峰值吞吐下每瓦 AI 工作量提升 1.5–1.9 倍、端到端延迟降低 1.7–3.6 倍。",
+      "boundary": "结果由 OpenAI 按 InferenceX 方法测得并做封装功耗归一；芯片仍在生产资格认证，计划年末部署。",
+      "use": "其价值更在于验证 KV 本地化和全栈协同的设计方向，当前不宜视为可采购的成熟平台。",
+      "sources": [
+        {
+          "url": "https://openai.com/index/jalapeno-first-results/",
+          "publisher": "OpenAI",
+          "role": "primary",
+          "label": "Jalapeño: First results from OpenAI's custom inference chip"
+        }
+      ],
+      "systemLayer": "hardware_interconnect_and_platforms",
+      "briefingSections": [
+        "hardware_platforms"
+      ],
+      "primaryBriefingSection": "hardware_platforms"
+    },
+    {
+      "id": "nvidia-groq-3-lpx",
+      "category": "hardware",
+      "title": "Groq 3 LPX 面向长上下文交互式 decode 给出首批平台数据",
+      "eventDate": "2026-08-24",
+      "windowRole": "in_window",
+      "maturity": "preview",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "NVIDIA 将 256 颗 LP30、128GB 片上 SRAM 的 Groq 3 LPX 定位为 Rubin NVL72 的低延迟 decode 补充。",
+      "evidence": "第三方 Artificial Analysis 对 Gemma 4 31B 在 100K 上下文测得 3,431 output token/s；平台依赖静态编译调度和芯片间确定性执行。",
+      "boundary": "单模型第三方数字不能代表完整 P/D 集群经济性；SPEED-Bench 的更高数据来自 NVIDIA 自测。",
+      "use": "值得针对高并发、长上下文、低 ITL 场景比较 SRAM-rich decode 节点与 GPU-only 方案的总成本。",
+      "sources": [
+        {
+          "url": "https://developer.nvidia.com/blog/how-nvidia-groq-3-lpx-unlocks-ultrafast-interactivity-at-long-context-on-nvidia-vera-rubin/",
+          "publisher": "NVIDIA",
+          "role": "primary",
+          "label": "How NVIDIA Groq 3 LPX Unlocks Ultrafast Interactivity at Long Context"
+        }
+      ],
+      "systemLayer": "hardware_interconnect_and_platforms",
+      "briefingSections": [
+        "hardware_platforms"
+      ],
+      "primaryBriefingSection": "hardware_platforms"
+    },
+    {
+      "id": "nvidia-nvhbm-nvlink-fusion",
+      "category": "hardware",
+      "title": "NVLink Fusion 把定制 AI 芯片的内存与互连绑定设计",
+      "eventDate": "2026-08-26",
+      "windowRole": "in_window",
+      "maturity": "preview",
+      "editorialRole": "full_only",
+      "quick": false,
+      "point": "NVIDIA 提出一种面向定制 AI 芯片的高带宽内存方案，希望把内存、芯片封装和机器之间的连接在设计早期一起优化。",
+      "evidence": "厂商给出的设计目标是提高内存带宽，同时减少连接电路占用的面积和内存功耗。",
+      "boundary": "均为厂商设计目标和推导，尚缺量产系统、真实模型及独立 TCO 数据。",
+      "use": "对自研加速器团队，这意味着封装、内存和机架互连需要在架构早期共同评估。",
+      "sources": [
+        {
+          "url": "https://developer.nvidia.com/blog/nvidia-nvlink-fusion-brings-nvhbm-to-next-generation-ai-infrastructure/",
+          "publisher": "NVIDIA",
+          "role": "primary",
+          "label": "NVIDIA NVLink Fusion Brings NVHBM to Next-Generation AI Infrastructure"
+        }
+      ],
+      "systemLayer": "hardware_interconnect_and_platforms",
+      "briefingSections": [
+        "hardware_platforms"
+      ],
+      "primaryBriefingSection": "hardware_platforms",
+      "verificationNotes": [
+        "厂商目标值：相对标准 HBM4e 带宽提升 30%、PHY/支持面积降低 67%、HBM 功耗降低 15%。"
+      ]
+    },
+    {
+      "id": "agentsysbench",
+      "category": "systems",
+      "title": "Agent 应用慢，不一定是模型慢",
+      "eventDate": "2026-08-15",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "recommended",
+      "quick": true,
+      "point": "Agent 除了调用大模型，还要运行工具、启动隔离环境并保存任务状态；这些环节也可能成为主要等待时间。",
+      "evidence": "论文测试的 10 个 Agent 应用中，有一半主要时间花在模型之外；单个隔离环境的内存占用也可能很高。",
+      "boundary": "结论来自论文选取的应用，具体瓶颈仍会随工具类型、任务流程和缓存方式变化。",
+      "use": "排查 Agent 服务慢时，不要只看模型吞吐，也要分别测工具调用、隔离环境和状态读写。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.15127",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "From LLM Inference to Agentic Workloads: Characterization and Implications for Serving Systems"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "serving_runtime_systems"
+      ],
+      "primaryBriefingSection": "serving_runtime_systems"
+    },
+    {
+      "id": "elastic-kv-cache",
+      "category": "systems",
+      "title": "Elastic KV Cache 让推理服务可以动态腾出显存",
+      "eventDate": "2026-08-24",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "recommended",
+      "quick": false,
+      "point": "它利用 CUDA VMM（可以理解为 GPU 的虚拟内存管理）动态增减 KV cache 占用，不用为了让出显存而重启推理服务。",
+      "evidence": "论文实验说明，按较大的显存块进行回收，对首个 token 延迟影响不大；调整一次批处理允许处理的 token 数，也能腾出更多空间。",
+      "boundary": "结果来自特定版本、GPU 和请求分布；长期运行时是否产生碎片或尾延迟波动，还需要真实业务验证。",
+      "use": "如果推理服务要和临时任务共用 GPU，可以先尝试调整批处理预算，再评估是否需要动态显存回收。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.23658",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "Elastic KV Cache for LLM Serving"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "serving_runtime_systems"
+      ],
+      "primaryBriefingSection": "serving_runtime_systems"
+    },
+    {
+      "id": "miles-v0-1",
+      "category": "systems",
+      "title": "Miles v0.1 展示大模型异步 RL 的生产化执行框架",
+      "eventDate": "2026-08-18",
+      "windowRole": "in_window",
+      "maturity": "experimental",
+      "editorialRole": "full_only",
+      "quick": false,
+      "point": "Miles 把强化学习中的样本生成和模型训练拆开运行，让两边不必每一步都互相等待。",
+      "evidence": "项目以 64 张 GB300 运行 GLM-5.2 744B-A40B 示例：32 卡 rollout、32 卡训练，65K 最大序列，训练 step 约 4.5 分钟。",
+      "boundary": "这是项目方单一大规模案例，权重滞后和 96% prefix-cache 命中率依赖具体采样策略。",
+      "use": "适合用来拆解异步 RL 中训练/推理资源配比、权重陈旧度与缓存收益之间的权衡。",
+      "sources": [
+        {
+          "url": "https://www.lmsys.org/blog/2026-08-18-miles-v0-1/",
+          "publisher": "LMSYS",
+          "role": "primary",
+          "label": "Miles v0.1: An Engine for Asynchronous RL at Scale"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "serving_runtime_systems"
+      ],
+      "primaryBriefingSection": "serving_runtime_systems"
+    },
+    {
+      "id": "simthesizer",
+      "category": "systems",
+      "title": "Simthesizer 用 Agent 自动构造推理系统模拟器",
+      "eventDate": "2026-08-25",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "full_only",
+      "quick": false,
+      "point": "Simthesizer 让 Agent 根据代码、文档和少量测量结果，自动搭出一个近似的推理服务模拟器，用来先估算容量和调度方案。",
+      "evidence": "作者报告对真实 vLLM 的平均吞吐误差为 2.51%，并相对 LLMServingSim2 和 Vidur 分别最高加速 284.96 倍和 23.19 倍。",
+      "boundary": "速度与误差均来自作者选定的系统版本和场景；自动生成模型在新硬件与新内核上的外推仍需审计。",
+      "use": "可作为容量规划和调度探索的低成本前置工具，但不应替代上线前真实压测。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.24650",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "Simthesizer: Agent-Driven Synthesis of LLM Serving Simulators"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "serving_runtime_systems"
+      ],
+      "primaryBriefingSection": "serving_runtime_systems"
+    },
+    {
+      "id": "dynamo-v1-4",
+      "category": "repositories",
+      "title": "Dynamo 1.4 让请求更容易找到已经算过的上下文",
+      "eventDate": "2026-08-21",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "editorialRole": "recommended",
+      "quick": true,
+      "point": "当多台机器都保存了一部分 KV cache 时，Dynamo 负责把新请求送到最可能已有缓存的地方，减少重复计算，并开始支持跨集群使用。",
+      "evidence": "1.4 版把缓存感知路由、资源预留、不同租户隔离和容量模拟放进同一个平台，补丁版继续修复高负载时的路由问题。",
+      "boundary": "跨数据中心和部分多模态路径仍是实验功能，不代表所有网络和推理后端都已同样成熟。",
+      "use": "如果团队有多机推理或跨集群复用缓存的需求，可以把 Dynamo 看成负责找路和协调资源的调度层。",
+      "sources": [
+        {
+          "url": "https://docs.nvidia.com/dynamo/dev/reference/releases/v1-4-0",
+          "publisher": "NVIDIA Dynamo",
+          "role": "primary",
+          "label": "Dynamo v1.4.0 release notes"
+        },
+        {
+          "url": "https://docs.nvidia.com/dynamo/dev/reference/releases",
+          "publisher": "NVIDIA Dynamo",
+          "role": "primary",
+          "label": "Dynamo release overview"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "repository_progress",
+        "serving_runtime_systems"
+      ],
+      "primaryBriefingSection": "serving_runtime_systems",
+      "sectionPoints": {
+        "repository_progress": "Dynamo 1.4.0/1.4.1 把跨数据中心 KV 路由、NIXL 传输、租户隔离和 Spica 仿真推进到同一控制面。",
+        "serving_runtime_systems": "多机 KV cache 能否复用，不只看有没有缓存，还要看请求能否被送到正确机器，以及不同用户之间是否安全隔离。"
+      }
+    },
+    {
+      "id": "lmcache-v0-5-4-work-cluster",
+      "category": "repositories",
+      "title": "LMCache 开始统一管理多台机器上的 KV cache",
+      "eventDate": "2026-08-28",
+      "windowRole": "in_window",
+      "maturity": "released + RC",
+      "editorialRole": "recommended",
+      "quick": true,
+      "point": "KV cache 可以理解为模型读过一段上下文后留下的中间结果。LMCache 这次从管理单机缓存，扩展到查看、查找和搬运多台机器上的缓存。",
+      "evidence": "0.5.4 增加了多机缓存协调、全局查找和后台搬运；后续工作继续补上重启恢复、混合注意力模型和更多硬件环境。",
+      "boundary": "一部分后续能力仍属于 0.5.5 候选版本；公开问题也说明，服务重启或磁盘缓存场景下仍要重点验证是否取回了正确内容。",
+      "use": "可以把 LMCache 理解为多机 KV cache 的仓库管理员，负责缓存放在哪里、怎么找到和怎么搬；Dynamo 更像交通调度员，负责把请求送到合适的机器。",
+      "sources": [
+        {
+          "url": "https://github.com/LMCache/LMCache/releases/tag/v0.5.4",
+          "publisher": "LMCache",
+          "role": "primary",
+          "label": "LMCache 0.5.4 官方说明"
+        },
+        {
+          "url": "https://github.com/LMCache/LMCache/pull/4678",
+          "publisher": "LMCache",
+          "role": "primary",
+          "label": "多机协调状态的重启恢复",
+          "display": false
+        },
+        {
+          "url": "https://github.com/LMCache/LMCache/pull/4679",
+          "publisher": "LMCache",
+          "role": "primary",
+          "label": "并行场景下的缓存适配",
+          "display": false
+        },
+        {
+          "url": "https://github.com/LMCache/LMCache/pull/3968",
+          "publisher": "LMCache",
+          "role": "primary",
+          "label": "更多硬件环境适配",
+          "display": false
+        },
+        {
+          "url": "https://github.com/LMCache/LMCache/issues/4715",
+          "publisher": "LMCache issue tracker",
+          "role": "primary",
+          "label": "空闲节点回收后的挂起报告",
+          "display": false
+        },
+        {
+          "url": "https://github.com/LMCache/LMCache/issues/4492",
+          "publisher": "LMCache issue tracker",
+          "role": "primary",
+          "label": "重启后缓存正确性报告"
+        }
+      ],
+      "systemLayer": "serving_runtime_and_systems",
+      "briefingSections": [
+        "repository_progress",
+        "serving_runtime_systems"
+      ],
+      "primaryBriefingSection": "serving_runtime_systems",
+      "sectionPoints": {
+        "repository_progress": "LMCache 从管理单机缓存，扩展到统一查找和搬运多台机器上的 KV cache，并继续补充重启恢复与更多模型支持。",
+        "serving_runtime_systems": "KV cache 是模型读过上下文后留下的中间结果；LMCache 现在开始像仓库管理员一样，统一管理这些结果放在哪里、怎么找到和怎么搬。"
+      },
+      "verificationNotes": [
+        "0.5.5 候选工作继续覆盖协调状态恢复、并行场景缓存适配和更多硬件后端。",
+        "相关实现细节由条目中 display:false 的一手 PR 链接保留，群发 HTML 不展开。"
+      ]
+    },
+    {
+      "id": "flashinfer-v0-6-18",
+      "category": "kernels",
+      "title": "FlashInfer 0.6.18 补齐 Rubin 支持并扩展整层 EP MoE",
+      "eventDate": "2026-08-29",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "版本完成 Rubin SM107 的 attention、GEMM、MoE 和量化 API 支持，并加入 Hopper 整层专家并行 MoE 后端。",
+      "evidence": "项目报告 384-expert DeepSeek 几何下 pull backend 达 562 TFLOPS/rank；Kimi K3 融合 KDA decode 在单行 B200 上为 vLLM fused 的 1.33 倍。",
+      "boundary": "均为项目微基准或特定模型几何；Rubin 支持属于早期软件栈，接口和性能仍可能快速变化。",
+      "use": "关注新 GPU 的团队可据此建立 SM107 bring-up 清单，并提前回归 MoE、KDA 和低精度算子。",
+      "sources": [
+        {
+          "url": "https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.18",
+          "publisher": "FlashInfer",
+          "role": "primary",
+          "label": "FlashInfer v0.6.18 release"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "repository_progress",
+        "quantization_low_bit",
+        "kernels_compilers_operators"
+      ],
+      "primaryBriefingSection": "repository_progress",
+      "sectionPoints": {
+        "repository_progress": "FlashInfer 0.6.18 完成 Rubin SM107 bring-up，并扩展整层专家并行 MoE 后端。",
+        "quantization_low_bit": "Rubin 路径同步补齐量化 API，低精度支持已经进入新 GPU 的首轮软件栈。",
+        "kernels_compilers_operators": "attention、GEMM、MoE 与 KDA decode 的新后端是本次版本的核心算子变化。"
+      }
+    },
+    {
+      "id": "triton-v3-8-0",
+      "category": "kernels",
+      "title": "Triton 3.8.0 同步进入 Rubin、CDNA5 与更完整的低精度时代",
+      "eventDate": "2026-08-28",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "editorialRole": "headline",
+      "quick": true,
+      "point": "版本首次支持 NVIDIA Rubin SM107 和 AMD gfx1250/CDNA5，并增加四路打包 FP8/FP4 与更多 NVFP4/MXFP4 组合。",
+      "evidence": "同时扩展 FpSan、GSan、ConSan 正确性工具，并包含 MoE 与低精度 kernel 调优。",
+      "boundary": "tensor descriptor IR、block pointer 移除及 tl.dot 类型行为存在破坏性变化，旧 kernel 需要迁移测试。",
+      "use": "升级优先级应由新硬件需求驱动，并在性能测试前先跑数值与内存安全检查。",
+      "sources": [
+        {
+          "url": "https://github.com/triton-lang/triton/releases/tag/v3.8.0",
+          "publisher": "OpenAI Triton",
+          "role": "primary",
+          "label": "Triton 3.8.0 release"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "repository_progress",
+        "quantization_low_bit",
+        "kernels_compilers_operators"
+      ],
+      "primaryBriefingSection": "repository_progress",
+      "sectionPoints": {
+        "repository_progress": "Triton 3.8.0 同时进入 Rubin 与 CDNA5，并包含需要迁移验证的破坏性 IR/API 变化。",
+        "quantization_low_bit": "四路打包 FP8/FP4 与更多 NVFP4/MXFP4 组合进入编译器主线。",
+        "kernels_compilers_operators": "新硬件后端、低精度 dot 路径与 FpSan/GSan/ConSan 正确性工具同步扩展。"
+      }
+    },
+    {
+      "id": "cutile-python-1-6-rc",
+      "category": "kernels",
+      "title": "cuTile Python 1.6 RC 继续把 NVIDIA kernel 编程推向高层 tile DSL",
+      "eventDate": "2026-08-21",
+      "windowRole": "in_window",
+      "maturity": "RC",
+      "editorialRole": "risk",
+      "quick": false,
+      "point": "cuTile 1.6 RC 增加 stride 特化、可关闭边界检查的 load/store、PDL、可移植 TileIR 导出和 Rubin FP4 block-scaled MMA，继续形成一条 Triton 邻近的高层 Python tile 路径。",
+      "evidence": "NVIDIA 发布了 cuTile 1.6 候选版，重点补充新一代 GPU、FP4 低精度计算、自动调优和中间表示导出能力。",
+      "boundary": "这是 RC 而非稳定版；check_bounds=false 会把越界正确性责任交给作者，Rubin 路径依赖新硬件/工具链。cuTile 由编译器管理 block 内线程与调度，不能与显式 layout algebra、copy/MMA atom 的 CuTe DSL 混称为同一层。",
+      "use": "需要观察 NVIDIA 是否在形成 Triton 式高层 kernel DSL 的团队，应同时比较 cuTile、CuTe DSL 与 Triton 在布局控制、调度显式度、可移植性和调试边界上的取舍。",
+      "sources": [
+        {
+          "url": "https://pypi.org/project/cuda-tile/",
+          "publisher": "PyPI / NVIDIA",
+          "role": "primary",
+          "label": "cuda-tile release history"
+        },
+        {
+          "url": "https://github.com/NVIDIA/cutile-python/commit/9c3ee3ccc504f18bbabf55b0d3e6d398bb21ecc4",
+          "publisher": "NVIDIA",
+          "role": "primary",
+          "label": "cuTile 1.6 changelog commit"
+        },
+        {
+          "url": "https://docs.nvidia.com/cuda/cutile-python/quickstart.html",
+          "publisher": "NVIDIA",
+          "role": "primary",
+          "label": "cuTile Python programming model"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "repository_progress",
+        "quantization_low_bit",
+        "kernels_compilers_operators"
+      ],
+      "primaryBriefingSection": "kernels_compilers_operators",
+      "sectionPoints": {
+        "repository_progress": "cuTile 1.6 RC 让 NVIDIA 的高层 tile DSL 获得更细的特化、边界检查、导出和 Rubin 低精度控制。",
+        "quantization_low_bit": "Rubin FP4 block-scaled MMA 已进入 cuTile 1.6 RC，但仍受预发布工具链和硬件可得性约束。",
+        "kernels_compilers_operators": "NVIDIA 正同时推进高层 cuTile 与低层 CuTe DSL；两者都关心 layout，但抽象和调度责任不同。"
+      }
+    },
+    {
+      "id": "cake-compiler-agent-codesign",
+      "category": "kernels",
+      "title": "CAKE 用编译器—Agent 共设计迭代 GPU kernel，而不只让 Agent 直接写 CUDA",
+      "eventDate": "2026-08-12",
+      "windowRole": "background",
+      "maturity": "research",
+      "editorialRole": "context",
+      "quick": false,
+      "point": "CAKE 提供 typed、hardware-explicit 的 schedule IR，让 Agent 操作 warp role、memory movement、同步与 pipeline，编译器负责验证、成本模型和局部诊断；失败案例再反向演化编译器与评测 harness。",
+      "evidence": "作者报告 B200 上 Flash-KMeans 达 tuned FlashML 的 1.144×，Kimi Delta Attention 相对官方 FlashKDA 几何平均 2.05×，KNN/KMeans dispatcher 跨 400 多个 shape 达 1.42–2.12×，并形成 4 个 upstream PR。",
+      "boundary": "论文首发于本窗口前三天，因此只作相邻背景；结果均为作者自报，包含 B200 特定路径和最高 80M token 搜索预算，尚不能外推为通用 kernel agent 的稳定收益。",
+      "use": "它最值得借鉴的不是单个 kernel 数字，而是把 Agent 搜索空间、静态验证、性能诊断与上游贡献闭环设计成一个可演进系统。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.12629",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "CAKE: Compiler-Agent Co-Design for Frontier Kernel Evolution"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "kernels_compilers_operators"
+      ],
+      "primaryBriefingSection": "kernels_compilers_operators"
+    },
+    {
+      "id": "hawkeye-kernel-optimization",
+      "category": "kernels",
+      "title": "Hawkeye 把硬件感知测试和 Kernel Agent 搜索连成闭环",
+      "eventDate": "2026-08-20",
+      "windowRole": "in_window",
+      "maturity": "research",
+      "editorialRole": "recommended",
+      "quick": false,
+      "point": "Hawkeye 面向 Ampere、Hopper、Blackwell 和 MI350，为每类架构生成专家级单元测试并驱动 kernel 优化。",
+      "evidence": "论文覆盖 BF16、FP8、NVFP4、MXFP4，并报告 BF16 相对 torch.compile 平均 1.13 倍、低精度平均 1.28 倍提升。",
+      "boundary": "提升来自作者基准，测试生成质量与 agent 搜索预算会影响结果；跨版本复现需固定编译器栈。",
+      "use": "对多代 GPU 共存的 kernel 团队，优先借鉴其按架构分层验收，而非只复制最终实现。",
+      "sources": [
+        {
+          "url": "https://openreview.net/pdf?id=e3pxJbBRBk",
+          "publisher": "OpenReview",
+          "role": "primary",
+          "label": "Hawkeye: Hardware-Aware Kernel Optimization with Expert-Level Unit Tests"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "kernels_compilers_operators",
+        "quantization_low_bit"
+      ],
+      "primaryBriefingSection": "kernels_compilers_operators"
+    },
+    {
+      "id": "zomboss-agentic-kernel-generation",
+      "category": "kernels",
+      "title": "Zomboss 把新加速器算子生成约束在可验证的编译器边界内",
+      "eventDate": "2026-08-01",
+      "windowRole": "background",
+      "maturity": "research",
+      "editorialRole": "context",
+      "quick": false,
+      "point": "Zomboss 先把指令语义、合法性、同步与内存协议编译成持久化 mapping interface，再让 Agent 只搜索 workload-dependent 映射，避免每个算子都重新猜硬件规则。",
+      "evidence": "论文在 20 个 Gemmini 与 36 个 PLENA workload 上报告 56/56 个 kernel 通过验证；相对编译器默认实现的几何平均加速分别为 3.34× 与 1.10×，并较直接 agentic generation 减少 71.2% 与 54.2% 推理 token。v2 于 8 月 26 日进入本窗口。",
+      "boundary": "论文首发于 8 月 1 日，8 月 26 日仅能确认版本更新，未把它重记为窗口内新发布；结果来自作者在两类新加速器上的研究基准，不能直接外推到 CUDA/Ascend 生产算子。",
+      "use": "对低语料或新 ISA 平台，优先把机器不变量固化到 compiler/verifier，让 Agent 搜索映射，而不是把正确性与性能都压给自由代码生成。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.00894",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "Rethinking Agentic Kernel Generation for Emerging Accelerators"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "kernels_compilers_operators"
+      ],
+      "primaryBriefingSection": "kernels_compilers_operators"
+    },
+    {
+      "id": "agenticcann-ascend-operator-generation",
+      "category": "kernels",
+      "title": "AgenticCANN 用知识增强的 Agent 演化生成 Ascend C 算子",
+      "eventDate": "2026-07-29",
+      "windowRole": "background",
+      "maturity": "research",
+      "editorialRole": "context",
+      "quick": false,
+      "point": "AgenticCANN 面向低语料 Ascend C 环境，把多层平台知识注入与分阶段探索/收敛策略结合，覆盖 elementwise、normalization、reduction、scatter/gather 与 fusion 算子。",
+      "evidence": "作者在 Ascend 910B 六个算子上报告 elementwise/normalization 90%–100% feasibility、fusion 56%，并在 1B Pangu 推理 kernel 上报告最高 6.65×；v3 修订于 8 月 13 日。",
+      "boundary": "首发 7 月 29 日且 v3 仍早于本窗口，只作相邻背景；样本仅六个算子，feasibility 与最高加速均为作者结果，fusion 覆盖仍明显不足。",
+      "use": "对 CANN/Ascend 团队，它提示瓶颈首先是平台知识与可行性，再是性能搜索；验收应把算子类别覆盖率和数值正确性放在最高加速之前。",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2607.26661",
+          "publisher": "arXiv",
+          "role": "primary",
+          "label": "AgenticCANN: Automated Ascend C Operator Generation via Knowledge-Augmented Agentic Evolution"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "kernels_compilers_operators"
+      ],
+      "primaryBriefingSection": "kernels_compilers_operators"
+    },
+    {
+      "id": "sglang-advanced-cuda-graph",
+      "category": "technical_blogs",
+      "title": "SGLang 用字节码 CUDA Graph 缩短图构建并覆盖动态 prefill",
+      "eventDate": "2026-08-17",
+      "windowRole": "in_window",
+      "maturity": "released",
+      "editorialRole": "recommended",
+      "quick": false,
+      "point": "SGLang 将 Bytecode CUDA Graph 设为 prefill 默认路径，以更少集成代码覆盖动态控制流。",
+      "evidence": "项目报告图构建比 torch.compile piecewise 快 3.8–5.2 倍，prefill 相对 eager 达 1.70 倍、full capture 达 1.93 倍。",
+      "boundary": "数据来自 SGLang 的选定模型和形状；图缓存规模、动态分支与自定义算子会改变收益。",
+      "use": "当 CUDA Graph 维护成本高于收益时，可把字节码捕获作为介于 eager 和全图捕获之间的工程选项。",
+      "sources": [
+        {
+          "url": "https://www.lmsys.org/blog/2026-08-17-advanced-cuda-graph/",
+          "publisher": "LMSYS",
+          "role": "primary",
+          "label": "Advanced CUDA Graph in SGLang"
+        }
+      ],
+      "systemLayer": "kernels_compilers_and_operators",
+      "briefingSections": [
+        "kernels_compilers_operators"
+      ],
+      "primaryBriefingSection": "kernels_compilers_operators"
+    }
+  ],
+  "repositoryDigest": {
+    "summary": "本期仓库更新主要解决三件事：让新模型真正跑起来、让多台机器共享和调度 KV cache，以及让 FP4 和新一代 GPU 获得可用的软件支持。",
+    "themes": [
+      {
+        "title": "新模型发布后，推理框架开始补齐真正可运行的支持",
+        "point": "能加载模型只是第一步；多卡运行、缓存方式、专家模型执行和启动速度也必须一起适配。",
+        "signals": [
+          {
+            "name": "vLLM 0.28.0",
+            "change": "补齐 Kimi K3 的多卡运行、注意力计算和分层 KV cache，并减少共享专家占用的 GPU 显存。"
+          },
+          {
+            "name": "SGLang 0.5.18",
+            "change": "重点缩短模型启动和首个 token 的等待时间，同时改进投机解码。"
+          },
+          {
+            "name": "FlashInfer 0.6.18",
+            "change": "增加 Kimi K3 注意力与专家模型所需的底层计算支持，减少模型适配对临时代码的依赖。"
+          }
+        ],
+        "readerValue": "帮助读者判断一个新模型是“仓库里能加载”，还是已经具备多卡、缓存和启动性能等可部署条件。"
+      },
+      {
+        "title": "FP4 和新一代 GPU 开始有完整的软件支持",
+        "point": "低精度格式只有同时得到推理框架、底层算子和编译器支持，才能真正节省显存并带来速度收益。",
+        "signals": [
+          {
+            "name": "SGLang 0.5.18",
+            "change": "AMD GPU 也开始支持两种常见 FP4 格式，低精度部署不再只围绕 NVIDIA。"
+          },
+          {
+            "name": "FlashInfer 0.6.18",
+            "change": "为 NVIDIA 下一代 Rubin GPU 补上注意力、矩阵乘和专家模型的首批底层支持。"
+          },
+          {
+            "name": "Triton 3.8.0",
+            "change": "同时增加 NVIDIA Rubin、AMD 新 GPU 和 FP4/FP8 支持，并加强数值与内存错误检查。"
+          },
+          {
+            "name": "cuTile 1.6 RC",
+            "change": "开始支持 Rubin 上的 FP4 计算和自动调优，但目前仍是候选版本。"
+          }
+        ],
+        "readerValue": "帮助读者判断 FP4 或新 GPU 是否已经得到推理框架、算子和编译器的端到端支持，而不只是规格表上可用。"
+      },
+      {
+        "title": "多机 KV cache 开始有人统一管理",
+        "point": "过去缓存主要由单台推理服务自己管理；现在 LMCache 负责保存和搬运，Dynamo 负责把请求送到有缓存的机器。",
+        "signals": [
+          {
+            "name": "Dynamo 1.4.0/1.4.1",
+            "change": "增加缓存感知路由、跨集群协调、不同租户隔离和容量模拟，并修复高负载路由问题。"
+          },
+          {
+            "name": "LMCache 0.5.4 + 0.5.5 RC work cluster",
+            "change": "增加多机缓存协调、全局查找、后台搬运和重启恢复，并继续适配混合注意力模型与更多硬件。"
+          },
+          {
+            "name": "vLLM 0.28.0",
+            "change": "可以把较少使用的 KV cache 放到磁盘，为更大的上下文或更多请求腾出 GPU 空间。"
+          },
+          {
+            "name": "SGLang 0.5.18",
+            "change": "继续缩短模型启动和首个 token 的等待时间，让上层调度更容易快速扩容。"
+          }
+        ],
+        "readerValue": "帮助读者判断多机长上下文场景是否需要引入独立的缓存管理与请求路由层。"
+      }
+    ],
+    "recommendedLinks": [
+      {
+        "label": "vLLM v0.28.0 release",
+        "url": "https://github.com/vllm-project/vllm/releases/tag/v0.28.0",
+        "why": "了解新模型、多机运行和分层 KV cache 支持有哪些实际变化。"
+      },
+      {
+        "label": "LMCache v0.5.4 release",
+        "url": "https://github.com/LMCache/LMCache/releases/tag/v0.5.4",
+        "why": "了解 LMCache 如何从单机缓存扩展到多机统一查找和搬运。"
+      },
+      {
+        "label": "FlashInfer v0.6.18 release",
+        "url": "https://github.com/flashinfer-ai/flashinfer/releases/tag/v0.6.18",
+        "why": "了解新 GPU、专家模型和低精度计算需要哪些底层支持。"
+      },
+      {
+        "label": "Triton 3.8.0 release",
+        "url": "https://github.com/triton-lang/triton/releases/tag/v3.8.0",
+        "why": "了解 Triton 对 NVIDIA、AMD 新 GPU 和 FP4/FP8 的支持范围。"
+      },
+      {
+        "label": "Dynamo v1.4.0 release notes",
+        "url": "https://docs.nvidia.com/dynamo/dev/reference/releases/v1-4-0",
+        "why": "了解多机环境下，请求如何被送到已有 KV cache 的机器。"
+      }
+    ]
+  },
+  "architectureTrend": {
+    "title": "国内模型架构正在收敛到三类改造",
+    "observations": [
+      {
+        "label": "Linear attention",
+        "point": "Qwen3-Next 首次在 Qwen 主线引入 3:1 GDN hybrid，Qwen3.8 延续该比例并把全局层升级为 QSA；GLM-5.3-Flash 也采用约 3:1 的 34 KDA + 11 DSA。"
+      },
+      {
+        "label": "Sparse attention",
+        "point": "DSA、QSA、IndexPool、IndexCache 看似不同，核心都在做轻量 indexer + 压缩／复用。"
+      },
+      {
+        "label": "Fancy residuals",
+        "point": "mHC、Attention Residual、Gated Residual、iHC 都在增加并控制跨层信息通道。"
+      }
+    ],
+    "muonTrend": {
+      "title": "Muon 正在进入主流大模型训练 recipe",
+      "point": "近期国内旗舰模型开始把 Muon 或其变体用于二维矩阵权重，并与 AdamW 分工；关注点从“是否使用”转向正交化精度、参数拆分和 scaling law 重拟合。",
+      "boundary": "Qwen3.8-Flash-Next 已由官方明确披露；其他模型是否采用及具体版本，以各家后续技术报告为准。"
+    },
+    "rows": [
+      {
+        "model": "DeepSeek V4",
+        "linearAttention": "否／主线仍是 DSA",
+        "sparseAttention": "DSA",
+        "residual": "Attention Residual"
+      },
+      {
+        "model": "GLM-5.3-Flash",
+        "linearAttention": "约 3:1；34 KDA + 11 DSA",
+        "sparseAttention": "DSA indexer + IndexPool",
+        "residual": "mHC"
+      },
+      {
+        "model": "Qwen3.8-Flash-Next",
+        "linearAttention": "3:1；每 4 层 3 层 GDN",
+        "sparseAttention": "每 4 层 1 层 QSA",
+        "residual": "4-branch Gated Residual"
+      },
+      {
+        "model": "Kimi K3",
+        "linearAttention": "KDA",
+        "sparseAttention": "Indexer／compression 路线",
+        "residual": "Attention Residual"
+      },
+      {
+        "model": "Hy4-preview",
+        "linearAttention": "否／DSA 主线",
+        "sparseAttention": "Gated DSA + IndexCache",
+        "residual": "iHC：4 streams"
+      }
+    ]
+  },
+  "sectionSummaries": {
+    "model_progress": "三项国内模型更新分别把 Linear+Sparse、GDN+QSA 与 Gated DSA+IndexCache 推向主线，残差路径和 Muon 训练也成为新的比较维度。",
+    "repository_progress": "本期仓库更新主要围绕三件事：新模型适配、多机 KV cache 管理，以及 FP4 和新 GPU 的软件支持。",
+    "quantization_low_bit": "本期论文集中在三条路线：量化误差修复、transform 与 FP4 格式协同，以及算法—kernel 联合设计；重点展开 3 篇，其余保留为轻量信号。",
+    "serving_runtime_systems": "推理系统开始更主动地管理显存和缓存：LMCache 保存并搬运多机 KV cache，Dynamo 负责把请求送到合适机器，Elastic KV Cache 则可以按需腾出 GPU 显存。",
+    "kernels_compilers_operators": "本期既有 Triton/cuTile 的新硬件与低精度路径，也出现 Hawkeye 这一窗口内 Kernel Agent 信号；结合 CAKE、Zomboss 与 AgenticCANN 的相邻证据，AI 辅助算子生成正从直接写代码转向 compiler/verifier 约束的闭环。",
+    "hardware_platforms": "推理平台继续向 SRAM、内存互联和全栈协同分化，但多数结果仍处于厂商预览阶段。"
+  },
+  "sectionSpotlights": {
+    "kernels_compilers_operators": [
+      {
+        "id": "agentic-kernel-operator-engineering",
+        "eyebrow": "方向观察 · AI 辅助算子生成",
+        "title": "Kernel Agent 的分水岭不再是能否写代码，而是能否在正确性边界内持续搜索并进入真实执行链",
+        "thesis": "窗口内 Hawkeye 把跨架构专家测试接入 Agent 搜索；相邻的 CAKE、Zomboss 与 AgenticCANN 分别把 typed IR、编译器合法性和平台知识变成约束。共同变化是把自由生成收缩为可验证、可 profile、可演进的工程闭环。",
+        "use": "评估此类系统时按 correctness gate、硬件/shape 覆盖、搜索成本、相对强基线收益、dispatch/library/serving 集成五项验收；superagent 或 multi-agent 只是编排形式，不应单独构成价值判断。",
+        "boundary": "本窗口可确认的新事件是 8 月 20 日 Hawkeye；CAKE 首发 8 月 12 日，Zomboss 首发 8 月 1 日但 v2 在 8 月 26 日更新，AgenticCANN 首发 7 月 29 日。后三者均按相邻背景呈现，所有性能数字均为作者自报。",
+        "itemIds": [
+          "hawkeye-kernel-optimization",
+          "cake-compiler-agent-codesign",
+          "zomboss-agentic-kernel-generation",
+          "agenticcann-ascend-operator-generation"
+        ],
+        "readerValue": "帮助读者区分“能生成一个演示算子”和“能在正确性约束下进入真实执行链”的系统。"
+      }
+    ]
+  },
+  "storylines": [
+    {
+      "id": "model-to-runtime",
+      "label": "01 · Architecture → Runtime",
+      "title": "模型架构不再是单点发布，而是在倒逼运行时重写执行路径",
+      "thesis": "GLM-5.3-Flash、Qwen3.8-Flash-Next 与 Hy4-preview 分别引入 Linear+Sparse、GDN+QSA 与 Gated DSA+IndexCache；vLLM、SGLang 与 FlashInfer 随后补齐 KDA、DCP、专家并行和图捕获，说明模型—运行时正在共同定义可部署性。",
+      "tension": "模型方给出的结构效率，只有在 prefix cache、KV 布局、通信和 kernel 全部适配后才会兑现。",
+      "itemIds": [
+        "glm-5-3-flash",
+        "qwen3-8-flash-next",
+        "hy4-preview",
+        "vllm-v0-28-0",
+        "sglang-v0-5-18",
+        "flashinfer-v0-6-18",
+        "sglang-advanced-cuda-graph"
+      ],
+      "systemLayer": "models_and_architecture"
+    },
+    {
+      "id": "custom-hardware-stack",
+      "label": "02 · Silicon → System",
+      "title": "推理硬件从通用加速器竞争，转向内存、互连和 decode 节点的系统分工",
+      "thesis": "Jalapeño 以全栈协同和 KV 本地化切入，Groq 3 LPX 以大容量片上 SRAM 承担低延迟 decode，NVHBM 则把定制 XPU 的内存与互连提前绑定；三者共同指向 P/D 分离后的异构推理系统。",
+      "tension": "目前大多仍是厂商结果或预览平台，关键未知量是跨节点调度、真实利用率和整机 TCO。",
+      "itemIds": [
+        "openai-jalapeno-first-results",
+        "nvidia-groq-3-lpx",
+        "nvidia-nvhbm-nvlink-fusion",
+        "flashinfer-v0-6-18",
+        "triton-v3-8-0"
+      ],
+      "systemLayer": "hardware_interconnect_and_platforms"
+    },
+    {
+      "id": "low-precision-contract",
+      "label": "03 · Low Precision → Correctness",
+      "title": "低精度已从权重量化，扩展为模型、Kernel、编译器和验收共同承担的执行契约",
+      "thesis": "Quantization-Aware Healing 试图在训练侧恢复 MXFP4 损伤；vLLM、SGLang、FlashInfer 和 Triton 同时扩展 NVFP4/MXFP4；Hawkeye 则把跨架构单元测试纳入 kernel 搜索，性能和正确性开始被放进同一条链。",
+      "tension": "微基准提升不能自动转化为端到端收益，破坏性编译器变化和不同硬件格式会放大回归面。",
+      "itemIds": [
+        "quantization-aware-healing",
+        "vllm-v0-28-0",
+        "sglang-v0-5-18",
+        "flashinfer-v0-6-18",
+        "triton-v3-8-0",
+        "hawkeye-kernel-optimization"
+      ],
+      "systemLayer": "training_and_quantization"
+    },
+    {
+      "id": "agentic-capacity",
+      "label": "04 · Agent Workload → Capacity",
+      "title": "Agent 服务的容量单位正在从 token/s 变成任务、沙箱、工具和状态生命周期",
+      "thesis": "AgentSysBench 证明非 LLM 阶段经常主导延迟；Miles 展示异步 RL 中训练与 rollout 的资源耦合；Elastic KV Cache 和 Simthesizer 分别提供显存弹性与规划工具，四项工作共同扩展了 serving 的系统边界。",
+      "tension": "这些结果高度依赖任务语义、缓存命中率和执行环境，必须用真实 workload trace 校准。",
+      "itemIds": [
+        "agentsysbench",
+        "elastic-kv-cache",
+        "miles-v0-1",
+        "simthesizer"
+      ],
+      "systemLayer": "serving_runtime_and_systems"
+    }
+  ]
+}
