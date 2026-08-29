@@ -3,6 +3,8 @@ outputs/**/*.html
 outputs/**/*.pptx
 outputs/**/*.jpg
 outputs/**/*.png
+!outputs/briefing/**/assets/
+!outputs/briefing/**/assets/**
 outputs/**/*.yml
 outputs/**/*.yaml
 !outputs/**/.gitkeep

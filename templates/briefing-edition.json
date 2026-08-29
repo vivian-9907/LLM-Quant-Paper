@@ -20,8 +20,8 @@
     "theme": "pink-purple",
     "sectionTitle": "本期进展",
     "easterEgg": {
-      "image": "",
-      "alt": ""
+      "image": "./assets/{{local-image-file}}",
+      "alt": "{{accessible description}}"
     }
   },
   "dek": "{{one factual sentence naming the most important releases in this window}}",

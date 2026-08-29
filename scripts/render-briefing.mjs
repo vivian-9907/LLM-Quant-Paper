@@ -28,6 +28,19 @@ const roleLabel = role => ({in_window: "窗口内", background: "背景", preann
 const pointFor = (item, section) => item.sectionPoints?.[section] || item.point;
 const profileText = value => Array.isArray(value) ? value.join(" · ") : value || "未披露";
 
+const inlineLocalImage = value => {
+  if (!value || /^(?:data:|https?:\/\/)/i.test(value)) return value;
+  const editionDirectory = path.dirname(input);
+  const absolute = path.resolve(editionDirectory, value);
+  const relative = path.relative(editionDirectory, absolute);
+  if (relative.startsWith("..") || path.isAbsolute(relative)) throw new Error(`本地图片必须位于 edition 目录内：${value}`);
+  if (!fs.existsSync(absolute)) throw new Error(`找不到本地图片：${absolute}`);
+  const mime = ({".jpg":"image/jpeg", ".jpeg":"image/jpeg", ".png":"image/png", ".gif":"image/gif", ".webp":"image/webp", ".svg":"image/svg+xml"})[path.extname(absolute).toLowerCase()];
+  if (!mime) throw new Error(`不支持的本地图片格式：${absolute}`);
+  return `data:${mime};base64,${fs.readFileSync(absolute).toString("base64")}`;
+};
+
+
 const sourceLinks = items => {
   const seen = new Set();
   const links = [];
@@ -152,7 +165,7 @@ const navigation = [
 
 const easterEgg = edition.presentation?.easterEgg;
 const easterEggHtml = easterEgg?.image
-  ? `<figure class="trend-break"><img src="${escapeHtml(easterEgg.image)}" alt="${escapeHtml(easterEgg.alt || "")}"></figure>`
+  ? `<figure class="trend-break"><img src="${escapeHtml(inlineLocalImage(easterEgg.image))}" alt="${escapeHtml(easterEgg.alt || "")}"></figure>`
   : "";
 
 const template = fs.readFileSync(path.join(root, "templates", "briefing.html"), "utf8");

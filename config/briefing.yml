@@ -121,6 +121,7 @@ publication:
     - Treat cross-domain storylines as optional synthesis after the fixed sections, never as a replacement for them.
     - Do not force a one-sentence trend or takeaway.
     - Do not publish team advice, next-window watchlists or verification appendices by default.
+    - Make the group-facing HTML self-contained: embed local edition assets as data URLs and keep the canonical files under the edition assets directory.
 
 quality_gates:
   require_primary_source_for_published_items: true

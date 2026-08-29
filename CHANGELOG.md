@@ -7,6 +7,7 @@
 - Required explicit reader value for repository themes and section spotlights.
 - Added soft lint for verification-log prose and dense unexplained acronyms.
 - Simplified the current edition's repository and serving explanations for cross-project readers.
+- Made local publication images self-contained in shared HTML and tracked canonical edition assets.
 
 ## v1.3 - Unified publication and substantive repository digest
 

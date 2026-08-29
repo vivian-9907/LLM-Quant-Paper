@@ -214,3 +214,25 @@ test("reader-facing lint warns on verification logs and dense acronyms", () => {
   assert.match(result.warnings.join("\n"), /核验日志/);
   assert.match(result.warnings.join("\n"), /不透明术语|密集缩写/);
 });
+
+
+test("renderer embeds local easter-egg images for single-file sharing", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "briefing-inline-image-"));
+  const assets = path.join(directory, "assets");
+  const input = path.join(directory, "edition.json");
+  const output = path.join(directory, "briefing.html");
+  fs.mkdirSync(assets);
+  fs.writeFileSync(path.join(assets, "niu.jpg"), Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+  const edition = readEdition(fixture);
+  edition.presentation.easterEgg = {image: "./assets/niu.jpg", alt: "牛来剧照"};
+  fs.writeFileSync(input, JSON.stringify(edition), "utf8");
+  try {
+    const run = spawnSync(process.execPath, [path.join(root, "scripts", "render-briefing.mjs"), input, output], {encoding:"utf8"});
+    assert.equal(run.status, 0, run.stderr);
+    const html = fs.readFileSync(output, "utf8");
+    assert.match(html, /src="data:image\/jpeg;base64,\/9j\/2Q=="/);
+    assert.doesNotMatch(html, /\.\/assets\/niu\.jpg/);
+  } finally {
+    fs.rmSync(directory, {recursive:true, force:true});
+  }
+});

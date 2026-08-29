@@ -59,6 +59,8 @@ node scripts/lint-briefing.mjs outputs/briefing/<date_range>/edition.json
 node scripts/render-briefing.mjs outputs/briefing/<date_range>/edition.json outputs/briefing/<date_range>/briefing.html
 ```
 
+本地剧照等装饰图片放在该期 `assets/`，在 edition 中使用相对路径；渲染时会自动内嵌为 data URL，因此群发只需发送一个 HTML 文件。
+
 ## 测试
 
 ```powershell

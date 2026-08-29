@@ -101,7 +101,7 @@ node scripts/lint-briefing.mjs outputs/briefing/<date_range>/edition.json
 node scripts/render-briefing.mjs outputs/briefing/<date_range>/edition.json outputs/briefing/<date_range>/briefing.html
 ```
 
-`briefing.html` 是 canonical artifact；Markdown 只作为可选导出。内容修改应回写 edition 后重新生成，禁止分别手工维护 HTML、卡片稿和正文稿。
+`briefing.html` 是 canonical artifact；Markdown 只作为可选导出。内容修改应回写 edition 后重新生成，禁止分别手工维护 HTML、卡片稿和正文稿。群发 HTML 必须是可独立转发的单文件：`presentation.easterEgg.image` 等本地图片使用 edition 目录内的相对路径，渲染器自动转为 data URL；对应文件保留在该期 `assets/` 并纳入版本管理。
 
 ## 输出目录
 

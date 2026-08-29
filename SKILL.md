@@ -114,7 +114,7 @@ Kernel scout 还必须单独补扫 AI 辅助算子生成：直接 kernel/operato
 
 ## Canonical 出版
 
-`outputs/briefing/<date_range>/edition.json` 是唯一出版事实源，`briefing.html` 是唯一默认最终呈现。不得分别手工维护快速版、完整稿、卡片稿和正文稿；内容密度统一由 `editorialRole` 决定。
+`outputs/briefing/<date_range>/edition.json` 是唯一出版事实源，`briefing.html` 是唯一默认最终呈现。不得分别手工维护快速版、完整稿、卡片稿和正文稿；内容密度统一由 `editorialRole` 决定。群发 HTML 必须可作为单文件转发；本地图片放在该期 `assets/`，由渲染器内嵌为 data URL，并将 canonical asset 纳入版本管理。
 
 ```powershell
 node scripts/lint-briefing.mjs outputs/briefing/<date_range>/edition.json
